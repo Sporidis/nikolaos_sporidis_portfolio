@@ -5,9 +5,6 @@
 // Generated with jaspr_builder
 
 import 'package:jaspr/server.dart';
-import 'package:nikolaos_sporidis_portfolio/components/counter.dart'
-    as _counter;
-import 'package:nikolaos_sporidis_portfolio/constants/theme.dart' as _theme;
 import 'package:nikolaos_sporidis_portfolio/pages/about.dart' as _about;
 import 'package:nikolaos_sporidis_portfolio/app.dart' as _app;
 
@@ -31,9 +28,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
   clientId: 'main.client.dart.js',
   clients: {_app.App: ClientTarget<_app.App>('app')},
   styles: () => [
-    ..._theme.styles,
     ..._app.AppState.styles,
-    ..._counter.CounterState.styles,
     ..._about.About.styles,
   ],
 );
