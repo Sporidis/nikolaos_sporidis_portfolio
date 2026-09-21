@@ -3,10 +3,9 @@ import 'package:jaspr/jaspr.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
-import 'package:nikolaos_sporidis_portfolio/pages/portfolio.dart';
 import 'package:nikolaos_sporidis_portfolio/components/nav.dart';
-import 'package:universal_web/web.dart' as web;
-import 'package:universal_web/js_interop.dart';
+import 'package:nikolaos_sporidis_portfolio/controllers/scroll_reveal_controller.dart';
+import 'package:nikolaos_sporidis_portfolio/pages/portfolio.dart';
 
 // The main component of your application.
 //
@@ -24,7 +23,7 @@ class App extends StatefulComponent {
 }
 
 class AppState extends State<App> {
-  web.IntersectionObserver? _observer;
+  final _reveal = ScrollRevealController();
 
   @override
   void initState() {
@@ -42,29 +41,13 @@ class AppState extends State<App> {
   }
 
   void _initReveal() {
-    _observer = web.IntersectionObserver(
-      ((JSArray<web.IntersectionObserverEntry> entries, web.IntersectionObserver obs) {
-        for (final entry in entries.toDart) {
-          if (entry.isIntersecting) {
-            entry.target.setAttribute('data-revealed', '');
-          } else {
-            entry.target.removeAttribute('data-revealed');
-          }
-        }
-      }).toJS,
-      web.IntersectionObserverInit(threshold: 0.15.toJS, rootMargin: '0px 0px -25% 0px'),
-    );
-
-    final nodes = web.document.querySelectorAll('[data-reveal]');
-    for (var i = 0; i < nodes.length; i++) {
-      _observer!.observe(nodes.item(i) as web.Element);
-    }
+    _reveal.attach();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _observer?.disconnect();
+    _reveal.detach();
   }
 
   @override
