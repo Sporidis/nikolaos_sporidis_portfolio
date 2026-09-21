@@ -18,6 +18,12 @@ abstract final class AppColors {
   /// Device bezel / raised chrome.
   static const surfaceRaised = Color('#23232F');
 
+  /// Code panel window-control dots.
+  static const chrome = Color('#2C2C3C');
+
+  /// Code panel body text.
+  static const codeText = Color('#C9C6D6');
+
   // --------------------------------------------------------------------- ink
   /// Headings and primary text.
   static const ink = Color('#F2F0EB');
@@ -83,4 +89,27 @@ abstract final class AppColors {
 
   /// Sticky header background (used with backdrop-filter: blur).
   static const headerVeil = Color('rgba(11,11,20,0.72)');
+
+  // ---------------------------------------------------------- code syntax
+  // Deliberate exception to the "amber is the only saturated colour" rule,
+  // scoped to the IDE code block: these mirror VSCode's Dark+ theme so the
+  // snippet reads as real syntax highlighting rather than themed text.
+
+  /// Keywords: class, extends, return, const, @override.
+  static const codeKeyword = Color('#C586C0');
+
+  /// Class / type names: Nikolaos, StatelessWidget, BuildContext...
+  static const codeType = Color('#4EC9B0');
+
+  /// Method names: build.
+  static const codeMethod = Color('#DCDCAA');
+
+  /// Parameter / named-argument labels: context, stack, graduated, status.
+  static const codeParam = Color('#9CDCFE');
+
+  /// String literals.
+  static const codeString = Color('#CE9178');
+
+  /// Numeric literals.
+  static const codeNumber = Color('#B5CEA8');
 }

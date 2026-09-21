@@ -6,11 +6,14 @@
 abstract final class AppEffects {
   // -------------------------------------------------------------- elevation
   /// Card at rest.
-  static const cardShadow = '0 18px 50px rgba(0,0,0,0.40)';
+  static const cardShadow =
+      '0 18px 50px rgba(0,0,0,0.40), '
+      '0 0 0 1px rgba(245,166,35,0), '
+      '0 0 70px rgba(245,166,35,0)';
 
   /// Feature card on hover — lift plus amber glow ring.
   static const cardShadowHover =
-      '0 34px 90px rgba(0,0,0,0.55), '
+      '0 24px 60px rgba(0,0,0,0.45), '
       '0 0 0 1px rgba(245,166,35,0.12), '
       '0 0 70px rgba(245,166,35,0.10)';
 
@@ -33,6 +36,13 @@ abstract final class AppEffects {
   /// Status dot / timeline node.
   static const nodeRing = '0 0 0 5px rgba(245,166,35,0.12)';
 
+  /// Status dot glow.
+  static const dotGlow = '0 0 0 3px rgba(245,166,35,0.16)';
+
+  /// Ambient glow behind the IDE code panel. Pair with a blur filter on an
+  /// absolutely-positioned, negative-inset layer behind the panel.
+  static const ideGlow = 'radial-gradient(400px 260px at 70% 20%, rgba(245,166,35,0.09), transparent 70%)';
+
   // ------------------------------------------------------------- background
   /// Fixed gradient mesh. Render as a `position: fixed; inset: 0` div behind
   /// everything with `pointer-events: none`, NOT as a body background — you
@@ -51,12 +61,10 @@ abstract final class AppEffects {
       "filter='url(%23n)' opacity='0.6'/></svg>\")";
 
   /// Diagonal stripes for image placeholders / empty wells.
-  static const stripes =
-      'repeating-linear-gradient(135deg, rgba(242,240,235,0.05) 0 2px, transparent 2px 11px)';
+  static const stripes = 'repeating-linear-gradient(135deg, rgba(242,240,235,0.05) 0 2px, transparent 2px 11px)';
 
   /// Standard card fill (subtle top-down tint).
-  static const cardFill =
-      'linear-gradient(180deg, rgba(242,240,235,0.035), rgba(242,240,235,0.012))';
+  static const cardFill = 'linear-gradient(180deg, rgba(242,240,235,0.035), rgba(242,240,235,0.012))';
 
   /// Solid panel fill (code panel, feature card, modal).
   static const panelFill = 'linear-gradient(180deg, #14141F 0%, #101019 100%)';

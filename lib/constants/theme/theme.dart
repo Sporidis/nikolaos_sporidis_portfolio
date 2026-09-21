@@ -29,7 +29,7 @@ List<StyleRule> get styles => [
   const FontFace('Space Grotesk', '/fonts/space-grotesk-v22-latin-regular.woff2', weight: 400),
   const FontFace('Space Grotesk', '/fonts/space-grotesk-v22-latin-500.woff2', weight: 500),
   const FontFace('Space Grotesk', '/fonts/space-grotesk-v22-latin-700.woff2', weight: 700),
-  const FontFace('IBM Plex Sans', '/fonts/ibm-plex-sans-v23-latin-400.woff2', weight: 400),
+  const FontFace('IBM Plex Sans', '/fonts/ibm-plex-sans-v23-latin-regular.woff2', weight: 400),
   const FontFace('IBM Plex Sans', '/fonts/ibm-plex-sans-v23-latin-500.woff2', weight: 500),
   const FontFace('JetBrains Mono', '/fonts/jetbrains-mono-v24-latin-regular.woff2', weight: 400),
   const FontFace('JetBrains Mono', '/fonts/jetbrains-mono-v24-latin-500.woff2', weight: 500),

@@ -1,8 +1,10 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
-
-import 'pages/about.dart';
-import 'pages/home.dart';
+import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
+import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
+import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
+import 'package:nikolaos_sporidis_portfolio/pages/portfolio.dart';
+import 'package:nikolaos_sporidis_portfolio/components/nav.dart';
 
 // The main component of your application.
 //
@@ -36,12 +38,25 @@ class AppState extends State<App> {
 
   @override
   Component build(BuildContext context) {
-    // This method is rerun every time the component is rebuilt.
-
-    // Renders a <div class="main"> html element with children.
-    return div(classes: 'main', [
-      const Home(),
-      const About(),
+    return .fragment([
+      div(
+        classes: 'mesh',
+        styles: Styles(
+          position: .fixed(top: .zero, left: .zero, right: .zero, bottom: .zero),
+          zIndex: ZIndex(-1),
+          pointerEvents: .none,
+          raw: {
+            'background-image': AppEffects.mesh,
+            'will-change': 'opacity',
+            'isolation': 'isolate',
+          },
+        ),
+        [],
+      ),
+      div(classes: 'main', [
+        NavBar(),
+        const Portfolio(),
+      ]),
     ]);
   }
 
@@ -55,16 +70,18 @@ class AppState extends State<App> {
       // The '&' refers to the parent selector of a nested style rules.
       css('&').styles(
         display: .flex,
-        height: 100.vh,
-        flexDirection: .row,
-        flexWrap: .wrap,
+        minHeight: 100.vh,
+        flexDirection: .column,
       ),
       css('section').styles(
         display: .flex,
+        maxWidth: AppSpacing.contentMax,
+        padding: .symmetric(vertical: AppSpacing.sectionY, horizontal: AppSpacing.gutter),
+        margin: .symmetric(horizontal: .auto, vertical: .zero),
+        border: .only(
+          bottom: BorderSide.solid(color: AppColors.hairline, width: 1.px),
+        ),
         flexDirection: .column,
-        justifyContent: .center,
-        alignItems: .center,
-        flex: Flex(grow: 1, shrink: 0, basis: 400.px),
       ),
     ]),
   ];
