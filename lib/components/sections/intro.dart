@@ -48,7 +48,7 @@ class IntroSection extends StatelessComponent {
         alignItems: .center,
         gridTemplate: GridTemplate(
           columns: GridTracks([
-            GridTrack.repeat(.autoFit, [GridTrack(.minmax(TrackSize(320.px), .fr(1)))]),
+            GridTrack.repeat(.autoFit, [GridTrack(.minmax(TrackSize(AppSpacing.gridMin), .fr(1)))]),
           ]),
         ),
         gap: .all(AppSpacing.columnGap),

@@ -141,6 +141,7 @@ List<StyleRule> get styles => [
 [data-reveal][data-revealed] {
   opacity: 1;
   transform: none;
+  transition: ${AppMotion.transitionRevealIn};
 }
 '''),
 

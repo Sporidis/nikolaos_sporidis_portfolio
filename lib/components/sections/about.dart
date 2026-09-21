@@ -105,6 +105,7 @@ class AboutSection extends StatelessComponent {
       css('.about-fact-value').styles(
         color: AppColors.ink,
         fontSize: AppType.bodySmall,
+        fontWeight: FontWeight.w500,
         raw: {'margin': '0', 'line-height': '1.5'},
       ),
     ]),

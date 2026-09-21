@@ -3,6 +3,7 @@ import 'package:universal_web/js_interop.dart';
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
+import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
 import 'package:universal_web/web.dart' as web;
 
@@ -14,6 +15,7 @@ class NavBar extends StatefulComponent {
 }
 
 class NavBarState extends State<NavBar> {
+  bool _mobileMenuOpen = false;
   static const _navOffset = 96; // sticky nav height + a bit of buffer — tune to taste
 
   static const _navItems = {
@@ -107,6 +109,7 @@ class NavBarState extends State<NavBar> {
       events: {
         'click': (web.Event event) {
           _suppressScrollSpy = true;
+          _mobileMenuOpen = false;
           _activate(id);
         },
       },
@@ -128,22 +131,43 @@ class NavBarState extends State<NavBar> {
       ]),
 
       //right part
-      div(classes: 'navbar-links', [
-        div(
-          classes: 'navbar-indicator',
-          styles: Styles(
-            width: _indicatorWidth.px,
-            transform: .translate(x: _indicatorLeft.px),
+      div(classes: 'navbar-right', [
+        div(classes: _mobileMenuOpen ? 'navbar-links open' : 'navbar-links', [
+          div(
+            classes: 'navbar-indicator',
+            styles: Styles(
+              width: _indicatorWidth.px,
+              transform: .translate(x: _indicatorLeft.px),
+            ),
+            [],
           ),
-          [],
+          for (final id in _scrollSpyIds) _navLink(id, _navItems[id]!),
+        ]),
+        _navLink('hire-me', _navItems['hire-me']!),
+        button(
+          classes: 'navbar-burger',
+          attributes: {'aria-expanded': '$_mobileMenuOpen', 'aria-label': 'Toggle menu'},
+          events: events(onClick: () => setState(() => _mobileMenuOpen = !_mobileMenuOpen)),
+          [
+            span(classes: 'navbar-burger-bar', []),
+            span(classes: 'navbar-burger-bar', []),
+            span(classes: 'navbar-burger-bar', []),
+          ],
         ),
-        for (final entry in _navItems.entries) _navLink(entry.key, entry.value),
       ]),
     ]);
   }
 
   @css
   static List<StyleRule> get styles => [
+    css.keyframes('navLinksCollapse', {
+      '0%': Styles(opacity: 1, transform: .translate(x: .zero)),
+      '100%': Styles(opacity: 0, transform: .translate(x: (-28).px)),
+    }),
+    css.keyframes('navBurgerSpawn', {
+      '0%': Styles(opacity: 0, transform: .scale(0.4)),
+      '100%': Styles(opacity: 1, transform: .scale(1)),
+    }),
     css('.navbar', [
       css('&').styles(
         display: .flex,
@@ -159,6 +183,22 @@ class NavBarState extends State<NavBar> {
         backgroundColor: AppColors.headerVeil,
         raw: {'backdrop-filter': 'blur(14px)'},
       ),
+      css('.navbar-burger', [
+        css('&').styles(
+          display: .none,
+          flexDirection: .column,
+          justifyContent: .center,
+          alignItems: .center,
+          gap: .all(4.px),
+          raw: {'background': 'none', 'border': 'none', 'padding': '4px', 'cursor': 'pointer'},
+        ),
+        css('.navbar-burger-bar').styles(
+          width: 18.px,
+          height: 2.px,
+          radius: .all(Radius.circular(999.px)),
+          backgroundColor: AppColors.ink,
+        ),
+      ]),
       css('.navbar-brand-prefix').styles(
         color: AppColors.ink,
         fontFamily: AppFonts.mono,
@@ -168,6 +208,11 @@ class NavBarState extends State<NavBar> {
         color: AppColors.amber,
         fontFamily: AppFonts.mono,
         fontSize: 13.px,
+      ),
+      css('.navbar-right').styles(
+        display: .flex,
+        alignItems: .center,
+        gap: .all(AppSpacing.inline),
       ),
       css('.navbar-links').styles(
         display: .flex,
@@ -195,7 +240,7 @@ class NavBarState extends State<NavBar> {
       css('.navbar-links a.active').styles(
         color: AppColors.amber,
       ),
-      css('.navbar-links a.navbar-cta', [
+      css('a.navbar-cta', [
         css('&').styles(
           display: .inlineBlock,
           padding: .symmetric(vertical: AppSpacing.s8, horizontal: AppSpacing.s16),
@@ -217,6 +262,68 @@ class NavBarState extends State<NavBar> {
           ),
           color: AppColors.onAmber,
         ),
+      ]),
+    ]),
+    css.media(MediaQuery.screen(maxWidth: 700.px), [
+      // Nested under `.navbar` to match the specificity of the base rules
+      // (`.navbar .navbar-burger` etc, from the nesting above) — a bare
+      // `.navbar-burger` selector here has LOWER specificity than that base
+      // rule and loses even when this media query matches.
+      css('.navbar', [
+        // Plays once, exactly when the media query starts matching (i.e.
+        // when the window is dragged narrower than 700px) — CSS media
+        // queries are on/off, not interpolated against the live width, so
+        // this is a one-shot flourish at the crossing point, not something
+        // that tracks the drag continuously. Loading directly at a narrow
+        // width skips straight to the end state; there's no "crossing" to
+        // play. Delayed so it visibly follows the links leaving.
+        css('.navbar-burger').styles(
+          display: .flex,
+          animation: Animation(name: 'navBurgerSpawn', duration: 260.ms, delay: 160.ms, curve: .easeOut, fillMode: .backwards),
+        ),
+        // Always `display: flex` on mobile — closed vs. open is driven by
+        // opacity/transform/visibility instead, because `display` itself
+        // can't be transitioned (it jumps, it doesn't animate). The
+        // `visibility` transition is delayed on close (but not on open) so
+        // the panel stays hit-testable/focusable through the whole fade-out
+        // and becomes so immediately on fade-in.
+        css('.navbar-links', [
+          css('&').styles(
+            display: .flex,
+            position: .absolute(top: 100.percent, left: .zero, right: .zero),
+            padding: .all(AppSpacing.s16),
+            border: .only(
+              top: BorderSide.solid(color: AppColors.hairline, width: 1.px),
+            ),
+            opacity: 0,
+            visibility: .hidden,
+            pointerEvents: .none,
+            animation: Animation(name: 'navLinksCollapse', duration: 320.ms, curve: .easeOut),
+            transition: Transition.combine([
+              Transition('opacity', duration: 250.ms, curve: .easeOut),
+              Transition('transform', duration: 250.ms, curve: .easeOut),
+              Transition('visibility', duration: Duration.zero, delay: 250.ms),
+            ]),
+            transform: .translate(y: (-8).px),
+            flexDirection: .column,
+            alignItems: .start,
+            gap: .all(AppSpacing.s8),
+            backgroundColor: AppColors.surface,
+            raw: {'box-shadow': AppEffects.panelShadow},
+          ),
+          css('&.open').styles(
+            opacity: 1,
+            visibility: .visible,
+            pointerEvents: .auto,
+            transition: Transition.combine([
+              Transition('opacity', duration: 250.ms, curve: .easeOut),
+              Transition('transform', duration: 250.ms, curve: .easeOut),
+              Transition('visibility', duration: Duration.zero),
+            ]),
+            transform: .none,
+          ),
+        ]),
+        css('.navbar-indicator').styles(display: .none), // sliding underline doesn't apply to a stacked menu
       ]),
     ]),
   ];

@@ -189,7 +189,7 @@ class ProjectCardState extends State<ProjectCard> {
         overflow: .hidden,
         gridTemplate: GridTemplate(
           columns: GridTracks([
-            GridTrack.repeat(.autoFit, [GridTrack(.minmax(TrackSize(300.px), .fr(1)))]),
+            GridTrack.repeat(.autoFit, [GridTrack(.minmax(TrackSize(AppSpacing.gridMin), .fr(1)))]),
           ]),
         ),
         raw: {'background-image': AppEffects.panelFill, 'box-shadow': AppEffects.cardShadow},
@@ -215,10 +215,10 @@ class ProjectCardState extends State<ProjectCard> {
         css('.phone-phone-b').styles(
           position: .relative(),
           zIndex: ZIndex(1),
-          width: 158.px,
           border: .all(color: AppColors.hairlineMid, width: 1.px),
           backgroundColor: AppColors.surfaceDeep,
           raw: {
+            'width': 'clamp(96px, 30vw, 158px)',
             'aspect-ratio': '9 / 19.5',
             'border-radius': '22px',
             'box-shadow': '0 18px 44px rgba(0,0,0,0.5)',
@@ -227,10 +227,10 @@ class ProjectCardState extends State<ProjectCard> {
         css('.phone-phone-a').styles(
           position: .relative(),
           zIndex: ZIndex(3),
-          width: 186.px,
           border: .all(color: AppColors.hairlineStrong, width: 1.px),
           backgroundColor: AppColors.surface,
           raw: {
+            'width': 'clamp(112px, 34vw, 186px)',
             'aspect-ratio': '9 / 19.5',
             'border-radius': '26px',
             'margin-left': '-46px',

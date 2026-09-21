@@ -109,7 +109,7 @@ class PortraitCardState extends State<PortraitCard> {
           [],
         ),
         div(classes: 'portrait-caption', [
-          span([.text('Nikolaos, 2025')]),
+          span([.text('Nikolaos, 2026')]),
           span(classes: 'portrait-caption-live', [
             span(classes: 'portrait-caption-dot', []),
             .text('in colour'),
