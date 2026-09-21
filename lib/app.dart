@@ -52,7 +52,7 @@ class AppState extends State<App> {
           }
         }
       }).toJS,
-      web.IntersectionObserverInit(threshold: 0.15.toJS, rootMargin: '0px 0px -20% 0px'),
+      web.IntersectionObserverInit(threshold: 0.15.toJS, rootMargin: '0px 0px -25% 0px'),
     );
 
     final nodes = web.document.querySelectorAll('[data-reveal]');

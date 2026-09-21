@@ -21,6 +21,8 @@ import 'package:nikolaos_sporidis_portfolio/components/footer.dart' as _footer;
 import 'package:nikolaos_sporidis_portfolio/components/ide_block.dart'
     as _ide_block;
 import 'package:nikolaos_sporidis_portfolio/components/nav.dart' as _nav;
+import 'package:nikolaos_sporidis_portfolio/components/portrait_card.dart'
+    as _portrait_card;
 import 'package:nikolaos_sporidis_portfolio/components/project_card.dart'
     as _project_card;
 import 'package:nikolaos_sporidis_portfolio/constants/theme/theme.dart'
@@ -53,6 +55,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._footer.Footer.styles,
     ..._ide_block.IdeBlockState.styles,
     ..._nav.NavBarState.styles,
+    ..._portrait_card.PortraitCardState.styles,
     ..._project_card.ProjectCardState.styles,
     ..._about.AboutSection.styles,
     ..._experience.ExperienceSection.styles,

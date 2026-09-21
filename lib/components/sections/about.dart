@@ -1,7 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/components/portrait_card.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
-import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
 
@@ -19,11 +19,7 @@ class AboutSection extends StatelessComponent {
         p(classes: 'eyebrow', [.text('About')]),
 
         div(classes: 'about-grid', [
-          div(classes: 'about-portrait', [
-            span(classes: 'about-portrait-label', [
-              .text('[ portrait — 4:5, desaturated, amber rim light ]'),
-            ]),
-          ]),
+          PortraitCard(),
 
           div(classes: 'about-content', [
             h2([.text('Junior developer, not a junior thinker.')]),
@@ -61,30 +57,13 @@ class AboutSection extends StatelessComponent {
     ),
     css('.about-grid').styles(
       display: .grid,
-      alignItems: .start,
+      alignItems: .center,
       gridTemplate: GridTemplate(
         columns: GridTracks([
           GridTrack.repeat(.autoFit, [GridTrack(.minmax(TrackSize(AppSpacing.gridMin), .fr(1)))]),
         ]),
       ),
       gap: .all(AppSpacing.columnGap),
-    ),
-    css('.about-portrait').styles(
-      display: .flex,
-      padding: .all(AppSpacing.s16),
-      border: .all(color: AppColors.hairlineMid, width: 1.px),
-      radius: .all(Radius.circular(AppRadii.card)),
-      alignItems: .end,
-      backgroundColor: AppColors.surfaceDeep,
-      raw: {
-        'background-image': AppEffects.stripes,
-        'aspect-ratio': '4 / 5',
-      },
-    ),
-    css('.about-portrait-label').styles(
-      color: AppColors.inkFaint,
-      fontFamily: AppFonts.mono,
-      fontSize: AppType.label,
     ),
     css('.about-content', [
       css('&').styles(
