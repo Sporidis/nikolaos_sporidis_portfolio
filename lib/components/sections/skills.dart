@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/theme.dart';
+import 'package:nikolaos_sporidis_portfolio/models/skill.dart';
 
 class SkillsSection extends StatelessComponent {
   final String id;
@@ -90,29 +91,10 @@ class SkillsSection extends StatelessComponent {
         raw: {'transition': AppMotion.transitionFast},
       ),
       css('&:hover').styles(
-        border: .all(color: Color('rgba(245,166,35,0.45)'), width: 1.px),
+        border: .all(color: Color('rgba(var(--accent-rgb),0.45)'), width: 1.px),
         color: AppColors.amberLift,
         backgroundColor: AppColors.amberFill,
       ),
     ]),
   ];
-}
-
-final mySkills = [
-  Skill(name: 'Mobile', tags: ['Flutter', 'Dart', 'Riverpod', 'Material 3', 'Animations', 'Response layout']),
-  Skill(
-    name: 'Backend & data',
-    tags: ['Serverpod', 'REST', 'PostgreSQL', 'GraphQL', 'Firebase', 'SQLite', 'Auth flows'],
-  ),
-  Skill(
-    name: 'Tooling',
-    tags: ['Git', 'Github Actions', 'Figma', 'VS Code', 'Android Studio', 'Jaspr', 'CI/CD', 'Docker'],
-  ),
-];
-
-class Skill {
-  final String name;
-  List<String> tags;
-
-  Skill({required this.name, required this.tags});
 }

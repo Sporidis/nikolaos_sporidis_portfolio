@@ -4,6 +4,7 @@ import 'package:nikolaos_sporidis_portfolio/components/portrait_card.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
+import 'package:nikolaos_sporidis_portfolio/models/about_block.dart';
 
 class AboutSection extends StatelessComponent {
   final String id;
@@ -110,17 +111,4 @@ class AboutSection extends StatelessComponent {
       ),
     ]),
   ];
-}
-
-final aboutSectionContentList = [
-  AboutBlock(title: 'Education', content: 'BSc Software Engineering, 2026'),
-  AboutBlock(title: 'Focus', content: 'Flutter · Dart · Serverpod'),
-  AboutBlock(title: 'Looking for', content: 'Junior mobile role, on site or hybrid'),
-];
-
-class AboutBlock {
-  final String title;
-  final String content;
-
-  const AboutBlock({required this.title, required this.content});
 }
