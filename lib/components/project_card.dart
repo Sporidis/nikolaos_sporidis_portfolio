@@ -7,6 +7,7 @@ import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
+import 'package:nikolaos_sporidis_portfolio/viewmodels/pointer_tilt_viewmodel.dart';
 import 'package:universal_web/web.dart' as web;
 
 class ProjectCard extends StatefulComponent {
@@ -17,10 +18,9 @@ class ProjectCard extends StatefulComponent {
 }
 
 class ProjectCardState extends State<ProjectCard> {
+  final PointerTiltViewModel _tilt = PointerTiltViewModel();
+
   bool _demoOpen = false;
-  bool _hover = false;
-  double _rx = 0;
-  double _ry = 0;
   StreamSubscription<web.KeyboardEvent>? _escSub;
   bool get _reduceMotion => kIsWeb && web.window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -42,9 +42,7 @@ class ProjectCardState extends State<ProjectCard> {
 
   void _openDemo() => setState(() {
     _demoOpen = true;
-    _hover = false;
-    _rx = 0;
-    _ry = 0;
+    _tilt.leave();
   });
 
   void _closeDemo() => setState(() => _demoOpen = false);
@@ -53,33 +51,28 @@ class ProjectCardState extends State<ProjectCard> {
   Component build(BuildContext context) {
     return .fragment([
       div(
+        key: _tilt.cardKey,
         events: {
-          'mouseenter': (_) => setState(() => _hover = true),
-          'mouseleave': (_) => setState(() {
-            _hover = false;
-            _rx = 0;
-            _ry = 0;
+          'mouseenter': (_) => setState(() => _tilt.enter()),
+          'mouseleave': (_) => setState(() => _tilt.leave()),
+          'mousemove': (web.Event e) => setState(() {
+            final mouse = e as web.MouseEvent;
+            final el = _tilt.cardKey.currentNode;
+            if (el == null) return;
+            final rect = el.getBoundingClientRect();
+            final nx = (mouse.clientX - rect.left) / rect.width;
+            final ny = (mouse.clientY - rect.top) / rect.height;
+            _tilt.move(nx, ny);
           }),
-          'mousemove': (event) {
-            final e = event as web.MouseEvent;
-            final target = event.currentTarget as web.Element;
-            final rect = target.getBoundingClientRect();
-            final px = (e.clientX - rect.x) / rect.width - 0.5;
-            final py = (e.clientY - rect.y) / rect.height - 0.5;
-            setState(() {
-              _ry = px * 5;
-              _rx = -py * 4;
-            });
-          },
         },
         classes: 'projects-grid',
         styles: Styles(
           raw: {
-            'transform': _hover && !_reduceMotion
-                ? 'perspective(1100px) rotateX(${_rx.toStringAsFixed(2)}deg) rotateY(${_ry.toStringAsFixed(2)}deg) translateY(-6px)'
+            'transform': _tilt.hover && !_reduceMotion
+                ? 'perspective(1100px) rotateX(${_tilt.rotX.toStringAsFixed(2)}deg) rotateY(${_tilt.rotY.toStringAsFixed(2)}deg) translateY(-6px)'
                 : 'none',
             'transition': 'transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s ease',
-            'box-shadow': _hover ? AppEffects.cardShadowHover : AppEffects.cardShadow,
+            'box-shadow': _tilt.hover ? AppEffects.cardShadowHover : AppEffects.cardShadow,
           },
         ),
         [
@@ -90,7 +83,7 @@ class ProjectCardState extends State<ProjectCard> {
                 styles: Styles(
                   raw: {
                     'transform':
-                        'translateX(${_hover && !_reduceMotion ? -16 : 0}px) translateY(10px) rotate(-5deg)',
+                        'translateX(${_tilt.hover && !_reduceMotion ? -16 : 0}px) translateY(10px) rotate(-5deg)',
                     'transition': 'transform .5s cubic-bezier(.2,.7,.3,1)',
                   },
                 ),
@@ -101,7 +94,7 @@ class ProjectCardState extends State<ProjectCard> {
                 styles: Styles(
                   raw: {
                     'transform':
-                        'translateX(${_hover && !_reduceMotion ? 16 : 0}px) translateY(-10px) rotate(3deg)',
+                        'translateX(${_tilt.hover && !_reduceMotion ? 16 : 0}px) translateY(-10px) rotate(3deg)',
                     'transition': 'transform .5s cubic-bezier(.2,.7,.3,1)',
                   },
                 ),
@@ -111,7 +104,7 @@ class ProjectCardState extends State<ProjectCard> {
             span(
               classes: 'phone-sync-pill',
               styles: Styles(
-                opacity: _hover || _reduceMotion ? 1 : 0,
+                opacity: _tilt.hover || _reduceMotion ? 1 : 0,
                 raw: {'transition': 'opacity .4s ease'},
               ),
               [
@@ -143,8 +136,8 @@ class ProjectCardState extends State<ProjectCard> {
               classes: 'project-desc-why',
               styles: Styles(
                 raw: {
-                  'max-height': _hover ? '120px' : '0px',
-                  'opacity': _hover ? '1' : '0',
+                  'max-height': _tilt.hover ? '120px' : '0px',
+                  'opacity': _tilt.hover ? '1' : '0',
                   'transition': 'max-height .45s cubic-bezier(.2,.7,.3,1), opacity .35s ease',
                 },
               ),

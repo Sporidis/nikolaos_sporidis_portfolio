@@ -4,6 +4,7 @@ import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
+import 'package:nikolaos_sporidis_portfolio/viewmodels/pointer_tilt_viewmodel.dart';
 import 'package:universal_web/web.dart' as web;
 
 class PortraitCard extends StatefulComponent {
@@ -14,74 +15,39 @@ class PortraitCard extends StatefulComponent {
 }
 
 class PortraitCardState extends State<PortraitCard> {
-  final GlobalNodeKey<web.HTMLElement> _cardKey = GlobalNodeKey();
-
-  bool _hover = false;
-  double _rotX = 0;
-  double _rotY = 0;
-  double _translateX = 0;
-  double _translateY = 0;
-  double _lightX = 50;
-  double _lightY = 30;
-
-  void _handleEnter(web.Event event) {
-    setState(() => _hover = true);
-  }
-
-  void _handleLeave(web.Event event) {
-    setState(() {
-      _hover = false;
-      _rotX = 0;
-      _rotY = 0;
-      _translateX = 0;
-      _translateY = 0;
-      _lightX = 50;
-      _lightY = 30;
-    });
-  }
-
-  void _handleMove(web.Event event) {
-    final el = _cardKey.currentNode;
-    if (el == null) return;
-
-    final mouse = event as web.MouseEvent;
-    final rect = el.getBoundingClientRect();
-    final nx = (mouse.clientX - rect.left) / rect.width;
-    final ny = (mouse.clientY - rect.top) / rect.height;
-
-    setState(() {
-      _rotY = (nx - 0.5) * 7;
-      _rotX = -(ny - 0.5) * 6;
-      _translateX = -(nx - 0.5) * 10;
-      _translateY = -(ny - 0.5) * 10;
-      _lightX = nx * 100;
-      _lightY = ny * 100;
-    });
-  }
+  final PointerTiltViewModel _tilt = PointerTiltViewModel();
 
   @override
   Component build(BuildContext context) {
-    final tiltTransform = _hover
+    final tiltTransform = _tilt.hover
         ? Transform.combine([
             Transform.perspective(900.px),
-            Transform.rotateAxis(x: _rotX.deg, y: _rotY.deg),
+            Transform.rotateAxis(x: _tilt.rotX.deg, y: _tilt.rotY.deg),
             Transform.translate(y: (-4).px),
           ])
         : Transform.none;
 
     final imageTransform = Transform.combine([
-      Transform.scale(_hover ? 1.05 : 1),
-      Transform.translate(x: _translateX.px, y: _translateY.px),
+      Transform.scale(_tilt.hover ? 1.05 : 1),
+      Transform.translate(x: _tilt.translateX.px, y: _tilt.translateY.px),
     ]);
 
     return div(
-      key: _cardKey,
+      key: _tilt.cardKey,
       classes: 'about-portrait',
       styles: Styles(transform: tiltTransform),
       events: {
-        'mouseenter': _handleEnter,
-        'mouseleave': _handleLeave,
-        'mousemove': _handleMove,
+        'mouseenter': (web.Event e) => setState(() => _tilt.enter()),
+        'mouseleave': (web.Event e) => setState(() => _tilt.leave()),
+        'mousemove': (web.Event e) => setState(() {
+          final mouse = e as web.MouseEvent;
+          final el = _tilt.cardKey.currentNode;
+          if (el == null) return;
+          final rect = el.getBoundingClientRect();
+          final nx = (mouse.clientX - rect.left) / rect.width;
+          final ny = (mouse.clientY - rect.top) / rect.height;
+          _tilt.move(nx, ny);
+        }),
       },
       [
         img(
@@ -100,10 +66,10 @@ class PortraitCardState extends State<PortraitCard> {
         div(
           classes: 'portrait-glow',
           styles: Styles(
-            opacity: _hover ? 1 : 0,
+            opacity: _tilt.hover ? 1 : 0,
             raw: {
               'background-image':
-                  'radial-gradient(260px 260px at ${_lightX.toStringAsFixed(1)}% ${_lightY.toStringAsFixed(1)}%, rgba(245,166,35,0.22), transparent 70%)',
+                  'radial-gradient(260px 260px at ${_tilt.lightX.toStringAsFixed(1)}% ${_tilt.lightY.toStringAsFixed(1)}%, rgba(var(--accent-rgb),0.22), transparent 70%)',
             },
           ),
           [],
@@ -196,7 +162,7 @@ class PortraitCardState extends State<PortraitCard> {
           height: 5.px,
           radius: .all(Radius.circular(AppRadii.pill)),
           backgroundColor: AppColors.amber,
-          raw: {'box-shadow': '0 0 8px rgba(245,166,35,0.6)'},
+          raw: {'box-shadow': '0 0 8px rgba(var(--accent-rgb),0.6)'},
         ),
       ]),
     ]),
