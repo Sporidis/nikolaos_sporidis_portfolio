@@ -52,7 +52,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._demo_modal.DemoModal.styles,
     ..._footer.Footer.styles,
     ..._ide_block.IdeBlockState.styles,
-    ..._nav.NavBar.styles,
+    ..._nav.NavBarState.styles,
     ..._project_card.ProjectCardState.styles,
     ..._about.AboutSection.styles,
     ..._experience.ExperienceSection.styles,
