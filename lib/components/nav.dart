@@ -333,6 +333,7 @@ class NavBarState extends State<NavBar> {
         alignItems: .center,
       ),
       css('.theme-rail').styles(
+        padding: .symmetric(vertical: _swatchGlowPad.px),
         overflow: .hidden,
         transition: Transition('width', duration: 300.ms, curve: .easeOut),
       ),

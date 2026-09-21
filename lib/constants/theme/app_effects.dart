@@ -48,9 +48,9 @@ abstract final class AppEffects {
   /// everything with `pointer-events: none`, NOT as a body background — you
   /// need it to stay put while the page scrolls.
   static const mesh =
-      'radial-gradient(900px 600px at 78% -5%, rgba(var(--accent-rgb),0.10), transparent 60%), '
+      'radial-gradient(900px 600px at 78% -5%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%), '
       'radial-gradient(760px 520px at 8% 18%, rgba(84,72,190,0.16), transparent 62%), '
-      'radial-gradient(700px 700px at 60% 105%, rgba(var(--accent-rgb),0.06), transparent 60%)';
+      'radial-gradient(700px 700px at 60% 105%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 60%)';
 
   /// Film grain. Second fixed layer above the mesh:
   /// `opacity: 0.16; mix-blend-mode: overlay`.

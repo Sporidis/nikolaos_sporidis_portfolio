@@ -41,6 +41,7 @@ List<StyleRule> get styles => [
       '--accent': '#F5A623',
       '--accent-lift': '#FFC163',
       '--accent-rgb': '245,166,35',
+      'transition': '--accent .3s ease, --accent-lift .3s ease',
     },
   ),
 
@@ -183,6 +184,19 @@ List<StyleRule> get styles => [
   body { background: #fff; color: #000; }
   [data-reveal] { opacity: 1; transform: none; }
   nav, .demo-overlay { display: none; }
+}
+'''),
+
+  const RawRule('''
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #F5A623;
+}
+@property --accent-lift {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #FFC163;
 }
 '''),
 ];
