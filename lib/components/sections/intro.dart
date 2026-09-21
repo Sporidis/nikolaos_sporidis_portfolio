@@ -80,7 +80,7 @@ class IntroSection extends StatelessComponent {
         height: 7.px,
         radius: .all(Radius.circular(999.px)),
         backgroundColor: AppColors.amber,
-        raw: {'box-shadow': AppEffects.dotGlow}, // add this constant first
+        raw: {'box-shadow': AppEffects.dotGlow},
       ),
     ]),
     css('.intro-content', [

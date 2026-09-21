@@ -1,9 +1,9 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:nikolaos_sporidis_portfolio/components/footer.dart';
-import 'package:nikolaos_sporidis_portfolio/components/sections/intro.dart';
 import 'package:nikolaos_sporidis_portfolio/components/sections/about.dart';
 import 'package:nikolaos_sporidis_portfolio/components/sections/experience.dart';
+import 'package:nikolaos_sporidis_portfolio/components/sections/intro.dart';
 import 'package:nikolaos_sporidis_portfolio/components/sections/projects.dart';
 import 'package:nikolaos_sporidis_portfolio/components/sections/skills.dart';
 
