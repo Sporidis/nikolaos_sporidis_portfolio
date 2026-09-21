@@ -11,14 +11,19 @@ class ProjectsSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: id, classes: 'projects-section', [
-      p(classes: 'eyebrow', [.text('Projects')]),
-      h2([.text('One project, built properly.')]),
-      p(classes: 'projects-description', [
-        .text('I\'d rather show one app I can defend line by line than five tutorials.'),
-      ]),
-      const ProjectCard(),
-    ]);
+    return section(
+      id: id,
+      attributes: {'data-reveal': ''},
+      classes: 'projects-section',
+      [
+        p(classes: 'eyebrow', [.text('Projects')]),
+        h2([.text('One project, built properly.')]),
+        p(classes: 'projects-description', [
+          .text('I\'d rather show one app I can defend line by line than five tutorials.'),
+        ]),
+        const ProjectCard(),
+      ],
+    );
   }
 
   @css

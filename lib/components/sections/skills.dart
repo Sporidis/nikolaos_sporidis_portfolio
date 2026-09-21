@@ -9,22 +9,27 @@ class SkillsSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: id, classes: 'skills-section', [
-      p(classes: 'eyebrow', [.text('Skills')]),
+    return section(
+      id: id,
+      attributes: {'data-reveal': ''},
+      classes: 'skills-section',
+      [
+        p(classes: 'eyebrow', [.text('Skills')]),
 
-      h2([.text('The toolbox.')]),
+        h2([.text('The toolbox.')]),
 
-      div(classes: 'skills-list', [
-        for (var (i, skill) in mySkills.indexed)
-          div(classes: 'skill-item', [
-            p(classes: 'skill-index', [.text((i + 1).toString().padLeft(2, '0'))]),
-            h3([.text(skill.name)]),
-            div(classes: 'skill-tags', [
-              for (var tag in skill.tags) span(classes: 'skill-tag', [.text(tag)]),
+        div(classes: 'skills-list', [
+          for (var (i, skill) in mySkills.indexed)
+            div(classes: 'skill-item', [
+              p(classes: 'skill-index', [.text((i + 1).toString().padLeft(2, '0'))]),
+              h3([.text(skill.name)]),
+              div(classes: 'skill-tags', [
+                for (var tag in skill.tags) span(classes: 'skill-tag', [.text(tag)]),
+              ]),
             ]),
-          ]),
-      ]),
-    ]);
+        ]),
+      ],
+    );
   }
 
   @css

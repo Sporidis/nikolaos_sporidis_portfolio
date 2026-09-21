@@ -9,22 +9,27 @@ class Footer extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return footer(id: id, classes: 'footer', [
-      div(classes: 'footer-inner', [
-        p(classes: 'eyebrow', [.text('Contact')]),
-        h2([.text('Looking for a junior Flutter dev?')]),
-        p(classes: 'footer-lede', [
-          .text('I\'m available now, based in Belgium, and happy to walk you through any of my code.'),
+    return footer(
+      id: id,
+      attributes: {'data-reveal': ''},
+      classes: 'footer',
+      [
+        div(classes: 'footer-inner', [
+          p(classes: 'eyebrow', [.text('Contact')]),
+          h2([.text('Looking for a junior Flutter dev?')]),
+          p(classes: 'footer-lede', [
+            .text('I\'m available now, based in Belgium, and happy to walk you through any of my code.'),
+          ]),
+          a(href: 'mailto:nikolaos.sporidis@example.com', classes: 'footer-cta', [.text('hello@nikolaos.dev')]),
+          div(classes: 'footer-links', [
+            a(href: 'https://github.com/nikolaos-sporidis', [.text('GitHub')]),
+            a(href: 'https://www.linkedin.com/in/nikolaos-sporidis', [.text('LinkedIn')]),
+            a(href: 'https://nikolaos.dev/cv.pdf', [.text('cv (pdf)')]),
+          ]),
         ]),
-        a(href: 'mailto:nikolaos.sporidis@example.com', classes: 'footer-cta', [.text('hello@nikolaos.dev')]),
-        div(classes: 'footer-links', [
-          a(href: 'https://github.com/nikolaos-sporidis', [.text('GitHub')]),
-          a(href: 'https://www.linkedin.com/in/nikolaos-sporidis', [.text('LinkedIn')]),
-          a(href: 'https://nikolaos.dev/cv.pdf', [.text('cv (pdf)')]),
-        ]),
-      ]),
-      p(classes: 'footer-fineprint', [.text('built with Jaspr · Dart all the way down · © 2026 Nikolaos Sporidis')]),
-    ]);
+        p(classes: 'footer-fineprint', [.text('built with Jaspr · Dart all the way down · © 2026 Nikolaos Sporidis')]),
+      ],
+    );
   }
 
   @css

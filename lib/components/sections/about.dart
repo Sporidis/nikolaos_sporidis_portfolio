@@ -11,39 +11,44 @@ class AboutSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: id, classes: 'about-section', [
-      p(classes: 'eyebrow', [.text('About')]),
+    return section(
+      id: id,
+      attributes: {'data-reveal': ''},
+      classes: 'about-section',
+      [
+        p(classes: 'eyebrow', [.text('About')]),
 
-      div(classes: 'about-grid', [
-        div(classes: 'about-portrait', [
-          span(classes: 'about-portrait-label', [
-            .text('[ portrait — 4:5, desaturated, amber rim light ]'),
+        div(classes: 'about-grid', [
+          div(classes: 'about-portrait', [
+            span(classes: 'about-portrait-label', [
+              .text('[ portrait — 4:5, desaturated, amber rim light ]'),
+            ]),
+          ]),
+
+          div(classes: 'about-content', [
+            h2([.text('Junior developer, not a junior thinker.')]),
+            p([
+              .text(
+                'I finished my Software Engineering degree this year and spent most of it deep in Flutter — rebuilding layouts until the state model was clean, and learning that the hard part of mobile is rarely the UI code. During my internship I shipped a production Flutter app used by real field staff.',
+              ),
+            ]),
+            p([
+              .text(
+                "Now I'm looking for a team where I can keep learning from senior engineers and own features end to end — Flutter front end, Dart or Serverpod behind it.",
+              ),
+            ]),
+
+            div(classes: 'about-facts', [
+              for (var block in aboutSectionContentList)
+                div(classes: 'about-fact', [
+                  p(classes: 'about-fact-label', [.text(block.title)]),
+                  p(classes: 'about-fact-value', [.text(block.content)]),
+                ]),
+            ]),
           ]),
         ]),
-
-        div(classes: 'about-content', [
-          h2([.text('Junior developer, not a junior thinker.')]),
-          p([
-            .text(
-              'I finished my Software Engineering degree this year and spent most of it deep in Flutter — rebuilding layouts until the state model was clean, and learning that the hard part of mobile is rarely the UI code. During my internship I shipped a production Flutter app used by real field staff.',
-            ),
-          ]),
-          p([
-            .text(
-              "Now I'm looking for a team where I can keep learning from senior engineers and own features end to end — Flutter front end, Dart or Serverpod behind it.",
-            ),
-          ]),
-
-          div(classes: 'about-facts', [
-            for (var block in aboutSectionContentList)
-              div(classes: 'about-fact', [
-                p(classes: 'about-fact-label', [.text(block.title)]),
-                p(classes: 'about-fact-value', [.text(block.content)]),
-              ]),
-          ]),
-        ]),
-      ]),
-    ]);
+      ],
+    );
   }
 
   @css

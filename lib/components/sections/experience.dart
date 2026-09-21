@@ -11,47 +11,52 @@ class ExperienceSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return section(id: id, classes: 'experience-section', [
-      p(classes: 'eyebrow', [.text('Experience')]),
+    return section(
+      id: id,
+      attributes: {'data-reveal': ''},
+      classes: 'experience-section',
+      [
+        p(classes: 'eyebrow', [.text('Experience')]),
 
-      h2([.text('Where I\'ve shipped.')]),
-      div(classes: 'timeline', [
-        div(classes: 'timeline-rail', []),
+        h2([.text('Where I\'ve shipped.')]),
+        div(classes: 'timeline', [
+          div(classes: 'timeline-rail', []),
 
-        for (var entry in experienceTimeline)
-          div(classes: 'timeline-entry${entry.active ? ' timeline-entry-active' : ''}', [
-            span(classes: 'timeline-dot', []),
+          for (var entry in experienceTimeline)
+            div(classes: 'timeline-entry${entry.active ? ' timeline-entry-active' : ''}', [
+              span(classes: 'timeline-dot', []),
 
-            div(classes: 'timeline-heading', [
-              h3([.text(entry.title)]),
-              span(classes: 'timeline-meta', [
-                .text(entry.meta),
+              div(classes: 'timeline-heading', [
+                h3([.text(entry.title)]),
+                span(classes: 'timeline-meta', [
+                  .text(entry.meta),
+                ]),
               ]),
+
+              if (entry.project != null) p(classes: 'timeline-project', [.text(entry.project!)]),
+              p(classes: 'timeline-description', [.text(entry.description)]),
+
+              if (entry.impact != null && entry.learned != null)
+                div(classes: 'timeline-notes', [
+                  if (entry.impact != null)
+                    div(classes: 'timeline-note', [
+                      p(classes: 'timeline-note-label', [.text('Impact')]),
+                      p(classes: 'timeline-note-value', [.text(entry.impact!)]),
+                    ]),
+                  if (entry.learned != null)
+                    div(classes: 'timeline-note', [
+                      p(classes: 'timeline-note-label', [.text('Learned')]),
+                      p(classes: 'timeline-note-value', [.text(entry.learned!)]),
+                    ]),
+                ]),
+              if (entry.stack != null)
+                div(classes: 'timeline-stack', [
+                  for (var chip in entry.stack!) span(classes: 'timeline-chip', [.text(chip)]),
+                ]),
             ]),
-
-            if (entry.project != null) p(classes: 'timeline-project', [.text(entry.project!)]),
-            p(classes: 'timeline-description', [.text(entry.description)]),
-
-            if (entry.impact != null && entry.learned != null)
-              div(classes: 'timeline-notes', [
-                if (entry.impact != null)
-                  div(classes: 'timeline-note', [
-                    p(classes: 'timeline-note-label', [.text('Impact')]),
-                    p(classes: 'timeline-note-value', [.text(entry.impact!)]),
-                  ]),
-                if (entry.learned != null)
-                  div(classes: 'timeline-note', [
-                    p(classes: 'timeline-note-label', [.text('Learned')]),
-                    p(classes: 'timeline-note-value', [.text(entry.learned!)]),
-                  ]),
-              ]),
-            if (entry.stack != null)
-              div(classes: 'timeline-stack', [
-                for (var chip in entry.stack!) span(classes: 'timeline-chip', [.text(chip)]),
-              ]),
-          ]),
-      ]),
-    ]);
+        ]),
+      ],
+    );
   }
 
   @css
