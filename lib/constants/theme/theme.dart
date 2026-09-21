@@ -36,6 +36,13 @@ List<StyleRule> get styles => [
 
   // ------------------------------------------------------------------ reset
   css('*, *::before, *::after').styles(raw: {'box-sizing': 'border-box'}),
+  css(':root').styles(
+    raw: {
+      '--accent': '#F5A623',
+      '--accent-lift': '#FFC163',
+      '--accent-rgb': '245,166,35',
+    },
+  ),
 
   css('html').styles(
     raw: {
@@ -101,13 +108,13 @@ List<StyleRule> get styles => [
   css(':focus:not(:focus-visible)').styles(raw: {'outline': 'none'}),
   css(':focus-visible').styles(
     raw: {
-      'outline': '2px solid #F5A623',
+      'outline': '2px solid ${AppColors.amber.value}',
       'outline-offset': '2px',
       'border-radius': '4px',
     },
   ),
 
-  css('::selection').styles(raw: {'background': 'rgba(245,166,35,0.30)'}),
+  css('::selection').styles(raw: {'background': AppColors.amberBorder.value}),
 
   // Skip link: visually hidden until focused.
   css('.skip-link').styles(
@@ -123,8 +130,8 @@ List<StyleRule> get styles => [
       'z-index': '100',
       'padding': '10px 16px',
       'border-radius': '8px',
-      'background': '#F5A623',
-      'color': '#0B0B14',
+      'background': AppColors.amber.value,
+      'color': AppColors.onAmber.value,
     },
   ),
 

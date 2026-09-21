@@ -51,7 +51,7 @@ class Footer extends StatelessComponent {
       css('&').styles(
         position: .relative(),
         padding: .symmetric(vertical: 58.px, horizontal: 44.px),
-        border: .all(color: Color('rgba(245,166,35,0.22)'), width: 1.px),
+        border: .all(color: Color('rgba(var(--accent-rgb),0.22)'), width: 1.px),
         radius: .all(Radius.circular(AppRadii.feature)),
         textAlign: .center,
         raw: {'background-image': AppEffects.contactFill},

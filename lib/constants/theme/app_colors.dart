@@ -39,10 +39,10 @@ abstract final class AppColors {
 
   // ------------------------------------------------------------------- amber
   /// CTA fill, section labels, active nav, glow.
-  static const amber = Color('#F5A623');
+  static const amber = Color('var(--accent)');
 
   /// Hover text, chips on the feature card.
-  static const amberLift = Color('#FFC163');
+  static const amberLift = Color('var(--accent-lift)');
 
   /// Text placed ON an amber fill.
   static const onAmber = Color('#0B0B14');
@@ -67,22 +67,28 @@ abstract final class AppColors {
   static const cardTintStrong = Color('rgba(242,240,235,0.035)');
 
   /// Amber outline at rest (secondary buttons, featured pill).
-  static const amberBorder = Color('rgba(245,166,35,0.30)');
+  static const amberBorder = Color('rgba(var(--accent-rgb),0.30)');
 
   /// Amber outline on hover / active nav.
-  static const amberBorderStrong = Color('rgba(245,166,35,0.50)');
+  static const amberBorderStrong = Color('rgba(var(--accent-rgb),0.50)');
 
   /// Amber fill behind chips and ghost buttons.
-  static const amberFill = Color('rgba(245,166,35,0.07)');
+  static const amberFill = Color('rgba(var(--accent-rgb),0.07)');
 
   /// Amber fill behind the active nav pill.
-  static const amberFillSoft = Color('rgba(245,166,35,0.09)');
+  static const amberFillSoft = Color('rgba(var(--accent-rgb),0.09)');
 
   /// Amber fill on hover.
-  static const amberFillStrong = Color('rgba(245,166,35,0.20)');
+  static const amberFillStrong = Color('rgba(var(--accent-rgb),0.20)');
 
   /// Halo ring around focused / hovered controls.
-  static const amberHalo = Color('rgba(245,166,35,0.12)');
+  static const amberHalo = Color('rgba(var(--accent-rgb),0.12)');
+
+  /// Amber fill behind the active nav indicator.
+  static const amberFillIndicator = Color('rgba(var(--accent-rgb),0.1)');
+
+  /// Timeline rail gradient, amber stop (fades into hairlineMid).
+  static const amberBorderGradient = Color('rgba(var(--accent-rgb),0.6)');
 
   /// Modal scrim.
   static const scrim = Color('rgba(6,6,12,0.82)');

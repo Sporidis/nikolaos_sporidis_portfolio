@@ -8,14 +8,14 @@ abstract final class AppEffects {
   /// Card at rest.
   static const cardShadow =
       '0 18px 50px rgba(0,0,0,0.40), '
-      '0 0 0 1px rgba(245,166,35,0), '
-      '0 0 70px rgba(245,166,35,0)';
+      '0 0 0 1px rgba(var(--accent-rgb),0), '
+      '0 0 70px rgba(var(--accent-rgb),0)';
 
   /// Feature card on hover — lift plus amber glow ring.
   static const cardShadowHover =
       '0 24px 60px rgba(0,0,0,0.45), '
-      '0 0 0 1px rgba(245,166,35,0.12), '
-      '0 0 70px rgba(245,166,35,0.10)';
+      '0 0 0 1px rgba(var(--accent-rgb),0.12), '
+      '0 0 70px rgba(var(--accent-rgb),0.10)';
 
   /// Code panel, phone mock.
   static const panelShadow = '0 26px 64px rgba(0,0,0,0.55)';
@@ -25,32 +25,32 @@ abstract final class AppEffects {
 
   // ------------------------------------------------------------------ glows
   /// Primary CTA hover.
-  static const ctaGlow = '0 10px 40px rgba(245,166,35,0.30)';
+  static const ctaGlow = '0 10px 40px rgba(var(--accent-rgb),0.30)';
 
   /// Large CTA (contact) hover.
-  static const ctaGlowLarge = '0 12px 44px rgba(245,166,35,0.32)';
+  static const ctaGlowLarge = '0 12px 44px rgba(var(--accent-rgb),0.32)';
 
   /// Halo ring on small controls (hover and focus both use this shape).
-  static const halo = '0 0 0 6px rgba(245,166,35,0.16)';
+  static const halo = '0 0 0 6px rgba(var(--accent-rgb),0.16)';
 
   /// Status dot / timeline node.
-  static const nodeRing = '0 0 0 5px rgba(245,166,35,0.12)';
+  static const nodeRing = '0 0 0 5px rgba(var(--accent-rgb),0.12)';
 
   /// Status dot glow.
-  static const dotGlow = '0 0 0 3px rgba(245,166,35,0.16)';
+  static const dotGlow = '0 0 0 3px rgba(var(--accent-rgb),0.16)';
 
   /// Ambient glow behind the IDE code panel. Pair with a blur filter on an
   /// absolutely-positioned, negative-inset layer behind the panel.
-  static const ideGlow = 'radial-gradient(400px 260px at 70% 20%, rgba(245,166,35,0.09), transparent 70%)';
+  static const ideGlow = 'radial-gradient(400px 260px at 70% 20%, rgba(var(--accent-rgb),0.09), transparent 70%)';
 
   // ------------------------------------------------------------- background
   /// Fixed gradient mesh. Render as a `position: fixed; inset: 0` div behind
   /// everything with `pointer-events: none`, NOT as a body background — you
   /// need it to stay put while the page scrolls.
   static const mesh =
-      'radial-gradient(900px 600px at 78% -5%, rgba(245,166,35,0.10), transparent 60%), '
+      'radial-gradient(900px 600px at 78% -5%, rgba(var(--accent-rgb),0.10), transparent 60%), '
       'radial-gradient(760px 520px at 8% 18%, rgba(84,72,190,0.16), transparent 62%), '
-      'radial-gradient(700px 700px at 60% 105%, rgba(245,166,35,0.06), transparent 60%)';
+      'radial-gradient(700px 700px at 60% 105%, rgba(var(--accent-rgb),0.06), transparent 60%)';
 
   /// Film grain. Second fixed layer above the mesh:
   /// `opacity: 0.16; mix-blend-mode: overlay`.
@@ -71,5 +71,5 @@ abstract final class AppEffects {
 
   /// Contact block glow.
   static const contactFill =
-      'radial-gradient(700px 300px at 50% 0%, rgba(245,166,35,0.12), rgba(242,240,235,0.02) 70%)';
+      'radial-gradient(700px 300px at 50% 0%, rgba(var(--accent-rgb),0.12), rgba(242,240,235,0.02) 70%)';
 }
