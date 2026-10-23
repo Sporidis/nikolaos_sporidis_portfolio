@@ -5,6 +5,7 @@
 library;
 
 // Server-specific Jaspr import.
+import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
 // Imports the [App] component.
@@ -26,6 +27,15 @@ void main() {
   runApp(
     Document(
       title: 'nikolaos_sporidis_portfolio',
+      // No <base href="/"> (Jaspr's default). With it, `href="#about"` on /nl
+      // resolves to `/#about` and every in-page link jumps to the English page.
+      // Asset URLs are absolute instead (`/images/...`, `/fonts/...`).
+      base: null,
+      head: [
+        // Mounts the FreshCart Flutter demo into the modal's phone frames.
+        // Loads nothing else until the modal opens (docs/freshcart-demo/embed-plan.md).
+        script(src: '/demo/freshcart_demo.js', defer: true),
+      ],
       body: App(),
     ),
   );

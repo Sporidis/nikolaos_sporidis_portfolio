@@ -1,5 +1,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
@@ -19,6 +20,7 @@ class PortraitCardState extends State<PortraitCard> {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     final tiltTransform = _tilt.hover
         ? Transform.combine([
             Transform.perspective(900.px),
@@ -51,13 +53,13 @@ class PortraitCardState extends State<PortraitCard> {
       },
       [
         img(
-          src: 'images/portrait.png',
+          src: '/images/portrait.jpg',
           classes: 'portrait-base',
           alt: 'Nikolaos Sporidis',
           styles: Styles(transform: imageTransform),
         ),
         img(
-          src: 'images/portrait-live.png',
+          src: '/images/portrait-live.jpg',
           classes: 'portrait-live',
           alt: '',
           styles: Styles(transform: imageTransform),
@@ -75,10 +77,10 @@ class PortraitCardState extends State<PortraitCard> {
           [],
         ),
         div(classes: 'portrait-caption', [
-          span([.text('Nikolaos, 2026')]),
+          span([.text(s.portraitCaption)]),
           span(classes: 'portrait-caption-live', [
             span(classes: 'portrait-caption-dot', []),
-            .text('in colour'),
+            .text(s.portraitLive),
           ]),
         ]),
       ],

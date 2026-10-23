@@ -8,10 +8,8 @@ class NavItem {
   String toString() => label;
 }
 
-final List<NavItem> navItems = [
-  NavItem(key: 'about', label: 'About'),
-  NavItem(key: 'experience', label: 'Experience'),
-  NavItem(key: 'projects', label: 'Projects'),
-  NavItem(key: 'skills', label: 'Skills'),
-  NavItem(key: 'hire-me', label: 'Hire Me'),
-];
+/// Anchor ids of the sections the nav scroll-spies, in page order. These are
+/// the same in every language; only the labels are translated (see
+/// `AppStrings.navItems`).
+const navSectionIds = ['about', 'experience', 'projects', 'skills'];
+const navHireMeId = 'hire-me';

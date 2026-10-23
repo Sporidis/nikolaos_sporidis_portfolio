@@ -1,5 +1,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/components/project_card.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
@@ -11,15 +12,16 @@ class ProjectsSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     return section(
       id: id,
       attributes: {'data-reveal': ''},
       classes: 'projects-section',
       [
-        p(classes: 'eyebrow', [.text('Projects')]),
-        h2([.text('One project, built properly.')]),
+        p(classes: 'eyebrow', [.text(s.projectsEyebrow)]),
+        h2([.text(s.projectsHeading)]),
         p(classes: 'projects-description', [
-          .text('I\'d rather show one app I can defend line by line than five tutorials.'),
+          .text(s.projectsDescription),
         ]),
         const ProjectCard(),
       ],

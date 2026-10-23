@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/components/demo_modal.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
@@ -49,6 +50,7 @@ class ProjectCardState extends State<ProjectCard> {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     return .fragment([
       div(
         key: _tilt.cardKey,
@@ -87,7 +89,14 @@ class ProjectCardState extends State<ProjectCard> {
                     'transition': 'transform .5s cubic-bezier(.2,.7,.3,1)',
                   },
                 ),
-                [],
+                [
+                  img(
+                    src: '/images/welcome-page-light.webp',
+                    classes: 'phone-screen',
+                    alt: '',
+                    attributes: {'loading': 'lazy'},
+                  ),
+                ],
               ),
               div(
                 classes: 'phone-phone-a',
@@ -98,7 +107,14 @@ class ProjectCardState extends State<ProjectCard> {
                     'transition': 'transform .5s cubic-bezier(.2,.7,.3,1)',
                   },
                 ),
-                [],
+                [
+                  img(
+                    src: '/images/welcome-page-dark.webp',
+                    classes: 'phone-screen',
+                    alt: '',
+                    attributes: {'loading': 'lazy'},
+                  ),
+                ],
               ),
             ]),
             span(
@@ -109,7 +125,7 @@ class ProjectCardState extends State<ProjectCard> {
               ),
               [
                 span(classes: 'phone-sync-pill-dot', []),
-                .text('both phones in sync'),
+                .text(s.projectSyncPill),
               ],
             ),
           ]),
@@ -117,20 +133,18 @@ class ProjectCardState extends State<ProjectCard> {
             div(classes: 'project-desc-header', [
               h3([.text('FreshCart')]),
               div(classes: 'project-desc-header-pill', [
-                p(classes: 'project-desc-header-pill-txt', [.text('featured')]),
+                p(classes: 'project-desc-header-pill-txt', [.text(s.projectFeatured)]),
               ]),
             ]),
             p(classes: 'project-desc-meta', [
-              .text('shared shopping cart · Flutter + Serverpod'),
+              .text(s.projectMeta),
             ]),
 
             p(classes: 'project-desc-body', [
-              .text(
-                'A shopping list two or more phones can hold at once: join a cart with a code, and every add, tick and edit lands on the other devices in real time. Flutter on each client, a Serverpod backend over Postgres keeping one source of truth, with streaming updates instead of pull-to-refresh. The hard part was conflict handling — what happens when two people tick the same item a second apart.',
-              ),
+              .text(s.projectBody),
             ]),
             div(classes: 'project-desc-tags', [
-              for (var tag in tags) span(classes: 'project-desc-tag', [.text(tag)]),
+              for (var tag in s.projectTags) span(classes: 'project-desc-tag', [.text(tag)]),
             ]),
             div(
               classes: 'project-desc-why',
@@ -143,18 +157,18 @@ class ProjectCardState extends State<ProjectCard> {
               ),
               [
                 p(classes: 'project-desc-why-text', [
-                  .text(
-                    'why I built it → my household kept shopping from two out-of-date lists, and I wanted to learn real-time state across devices on a problem I actually had.',
-                  ),
+                  .text(s.projectWhy),
                 ]),
               ],
             ),
             div(classes: 'project-desc-btns', [
-              a(href: 'https://github.com/', classes: 'project-desc-btn-source', [.text('Source ↗')]),
+              a(href: 'https://github.com/Sporidis/FreshCartV2', target: .blank, classes: 'project-desc-btn-source', [
+                .text(s.projectSource),
+              ]),
               button(
                 events: events(onClick: _openDemo),
                 classes: 'project-desc-btn-demo',
-                [span(classes: 'status-dot', []), .text('Try the live demo')],
+                [span(classes: 'status-dot', []), .text(s.projectTryDemo)],
               ),
             ]),
           ]),
@@ -209,6 +223,7 @@ class ProjectCardState extends State<ProjectCard> {
           position: .relative(),
           zIndex: ZIndex(1),
           border: .all(color: AppColors.hairlineMid, width: 1.px),
+          overflow: .hidden,
           backgroundColor: AppColors.surfaceDeep,
           raw: {
             'width': 'clamp(96px, 30vw, 158px)',
@@ -221,6 +236,7 @@ class ProjectCardState extends State<ProjectCard> {
           position: .relative(),
           zIndex: ZIndex(3),
           border: .all(color: AppColors.hairlineStrong, width: 1.px),
+          overflow: .hidden,
           backgroundColor: AppColors.surface,
           raw: {
             'width': 'clamp(112px, 34vw, 186px)',
@@ -229,6 +245,12 @@ class ProjectCardState extends State<ProjectCard> {
             'margin-left': '-46px',
             'box-shadow': AppEffects.panelShadow,
           },
+        ),
+        css('.phone-screen').styles(
+          display: .block,
+          width: 100.percent,
+          height: 100.percent,
+          raw: {'object-fit': 'cover'},
         ),
       ]),
 
@@ -350,13 +372,3 @@ class ProjectCardState extends State<ProjectCard> {
     ]),
   ];
 }
-
-final List<String> tags = [
-  'Flutter',
-  'Dart',
-  'Serverpod',
-  'Postgres',
-  'Riverpod',
-  'Realtime streams',
-  'Multi-device sync',
-];

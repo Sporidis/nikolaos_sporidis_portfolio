@@ -4,7 +4,11 @@ import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
 import 'package:nikolaos_sporidis_portfolio/components/nav.dart';
+import 'package:jaspr_router/jaspr_router.dart';
 import 'package:nikolaos_sporidis_portfolio/controllers/scroll_reveal_controller.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/strings_en.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/strings_nl.dart';
 import 'package:nikolaos_sporidis_portfolio/pages/portfolio.dart';
 
 // The main component of your application.
@@ -50,8 +54,49 @@ class AppState extends State<App> {
     _reveal.detach();
   }
 
+  static const _strings = <AppLocale, AppStrings>{
+    AppLocale.en: EnStrings(),
+    AppLocale.nl: NlStrings(),
+  };
+
+  // One route per language. In static mode jaspr_router asks Jaspr to
+  // pre-render every route, so the build outputs a finished HTML page per
+  // language — no flash of English on /nl, and crawlers see both.
   @override
   Component build(BuildContext context) {
+    return Router(
+      routes: [
+        for (final locale in AppLocale.values)
+          Route(
+            path: locale.path,
+            title: _strings[locale]!.pageTitle,
+            builder: (context, state) => _page(_strings[locale]!),
+          ),
+      ],
+    );
+  }
+
+  Component _page(AppStrings strings) {
+    return Strings(
+      strings: strings,
+      child: .fragment([
+        // Per-route, not in main.server.dart's Document: that runs once for
+        // every page, but `lang` and the description differ per language.
+        Document.html(attributes: {'lang': strings.locale.code}),
+        Document.head(
+          meta: {'description': strings.pageDescription},
+          children: [
+            for (final alt in AppLocale.values)
+              link(rel: 'alternate', href: alt.path, attributes: {'hreflang': alt.code}),
+            link(rel: 'alternate', href: AppLocale.en.path, attributes: {'hreflang': 'x-default'}),
+          ],
+        ),
+        _layout(),
+      ]),
+    );
+  }
+
+  Component _layout() {
     return .fragment([
       div(
         classes: 'mesh',

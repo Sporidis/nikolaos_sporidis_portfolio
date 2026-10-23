@@ -1,5 +1,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/components/ide_block.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
@@ -12,26 +13,25 @@ class IntroSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     return section(id: id, classes: 'intro-section', [
       div(classes: 'intro-hero', [
         div(classes: 'status-pill', [
           span(classes: 'status-dot', []),
-          .text('open to Flutter / mobile roles'),
+          .text(s.introStatus),
         ]),
 
         div(classes: 'intro-content', [
           h1(classes: 'name', [.text('Nikolaos Sporidis')]),
-          span(classes: 'role', [.text('Flutter & mobile developer  ·  BSc Software Engineering')]),
+          span(classes: 'role', [.text(s.introRole)]),
           span(classes: 'description', [
-            .text(
-              'I build mobile apps end to end — Flutter on the front, Dart on the back — and I care about the details users feel: motion, state, and the millisecond after a tap.',
-            ),
+            .text(s.introDescription),
           ]),
         ]),
 
         div(classes: 'intro-buttons', [
-          a(classes: 'button-primary', href: '#', [.text('View projects →')]),
-          a(classes: 'button-secondary', href: '#', [.text('Get in touch')]),
+          a(classes: 'button-primary', href: '#', [.text(s.introCtaProjects)]),
+          a(classes: 'button-secondary', href: '#', [.text(s.introCtaContact)]),
         ]),
       ]),
 

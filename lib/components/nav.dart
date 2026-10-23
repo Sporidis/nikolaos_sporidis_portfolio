@@ -4,6 +4,7 @@ import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/models/nav_item.dart';
 import 'package:nikolaos_sporidis_portfolio/viewmodels/nav_accent_viewmodel.dart';
 import 'package:nikolaos_sporidis_portfolio/viewmodels/scroll_spy_viewmodel.dart';
@@ -45,11 +46,8 @@ class NavBarState extends State<NavBar> {
 
   bool _mobileMenuOpen = false;
 
-  static final _scrollSpySections = navItems.where((item) => item.key != 'hire-me').toList();
-  static final _hireMeItem = navItems.firstWhere((item) => item.key == 'hire-me');
-
   final Map<String, GlobalNodeKey<web.HTMLElement>> _linkKeys = {
-    for (final item in _scrollSpySections) item.key: GlobalNodeKey(),
+    for (final id in navSectionIds) id: GlobalNodeKey(),
   };
   double _indicatorLeft = 0;
   double _indicatorWidth = 0;
@@ -98,8 +96,8 @@ class NavBarState extends State<NavBar> {
         _applyTheme(saved);
       }
       _observer = web.IntersectionObserver(_handleIntersect.toJS);
-      for (final item in _scrollSpySections) {
-        final element = web.document.getElementById(item.key);
+      for (final id in navSectionIds) {
+        final element = web.document.getElementById(id);
         if (element != null) _observer!.observe(element);
       }
       _scrollEndListener = _handleScrollEnd.toJS;
@@ -117,7 +115,7 @@ class NavBarState extends State<NavBar> {
   }
 
   Component _navLink(NavItem item) {
-    if (item.key == 'hire-me') {
+    if (item.key == navHireMeId) {
       return a(href: '#${item.key}', classes: 'navbar-cta', [.text(item.label)]);
     }
     return a(
@@ -142,13 +140,13 @@ class NavBarState extends State<NavBar> {
   // (selectedIndex - itsIndex) * step to converge on that same origin. The
   // two cancel out exactly, so closed always looks like a single dot no
   // matter which theme is selected; opening just resets both to zero.
-  Component _themeSwatch(String key, int index, int selectedIndex) {
+  Component _themeSwatch(AppStrings s, String key, int index, int selectedIndex) {
     final theme = _navAccentViewModel.themes[key]!;
     final isSelected = key == _navAccentViewModel.theme;
     final visible = _navAccentViewModel.themeRailOpen || isSelected;
     final label = isSelected
-        ? (_navAccentViewModel.themeRailOpen ? 'Close colours' : 'Change colour')
-        : 'Switch to $key accent';
+        ? (_navAccentViewModel.themeRailOpen ? s.navCloseColours : s.navChangeColour)
+        : s.navSwitchAccent(key);
     return button(
       classes: 'theme-swatch',
       styles: Styles(
@@ -176,7 +174,7 @@ class NavBarState extends State<NavBar> {
     );
   }
 
-  Component _themeSwitcher() {
+  Component _themeSwitcher(AppStrings s) {
     final keys = _navAccentViewModel.themes.keys.toList();
     final selectedIndex = keys.indexOf(_navAccentViewModel.theme);
     final openWidth = keys.length * _swatchSize + (keys.length - 1) * _swatchGap;
@@ -202,15 +200,40 @@ class NavBarState extends State<NavBar> {
                 x: (_navAccentViewModel.themeRailOpen ? 0.0 : _swatchGlowPad - _swatchStep * selectedIndex).px,
               ),
             ),
-            [for (var i = 0; i < keys.length; i++) _themeSwatch(keys[i], i, selectedIndex)],
+            [for (var i = 0; i < keys.length; i++) _themeSwatch(s, keys[i], i, selectedIndex)],
           ),
         ],
       ),
     ]);
   }
 
+  // Plain links, not the router's Link: a full page load swaps <html lang>,
+  // the title and the FreshCart engine along with the copy. The current
+  // language is a span, so there's nothing to click on.
+  Component _languageSwitcher(AppStrings s) {
+    return div(classes: 'lang-switcher', attributes: {'role': 'group', 'aria-label': s.navLanguage}, [
+      for (final (i, locale) in AppLocale.values.indexed) ...[
+        if (i > 0) span(classes: 'lang-sep', attributes: {'aria-hidden': 'true'}, [.text('·')]),
+        if (locale == s.locale)
+          span(classes: 'lang-option current', attributes: {'aria-current': 'true'}, [.text(locale.label)])
+        else
+          a(
+            href: locale.path,
+            classes: 'lang-option',
+            attributes: {'hreflang': locale.code, 'lang': locale.code},
+            [.text(locale.label)],
+          ),
+      ],
+    ]);
+  }
+
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
+    final items = s.navItems;
+    final sectionItems = items.where((item) => item.key != navHireMeId);
+    final hireMeItem = items.firstWhere((item) => item.key == navHireMeId);
+
     return nav(classes: 'navbar', [
       // left part
       div(classes: 'navbar-brand', [
@@ -233,13 +256,14 @@ class NavBarState extends State<NavBar> {
             ),
             [],
           ),
-          for (final item in _scrollSpySections) _navLink(item),
+          for (final item in sectionItems) _navLink(item),
         ]),
-        _themeSwitcher(),
-        _navLink(_hireMeItem),
+        _languageSwitcher(s),
+        _themeSwitcher(s),
+        _navLink(hireMeItem),
         button(
           classes: 'navbar-burger',
-          attributes: {'aria-expanded': '$_mobileMenuOpen', 'aria-label': 'Toggle menu'},
+          attributes: {'aria-expanded': '$_mobileMenuOpen', 'aria-label': s.navToggleMenu},
           events: events(onClick: () => setState(() => _mobileMenuOpen = !_mobileMenuOpen)),
           [
             span(classes: 'navbar-burger-bar', []),
@@ -323,6 +347,20 @@ class NavBarState extends State<NavBar> {
         ]),
         backgroundColor: AppColors.amberFillIndicator,
       ),
+      css('.lang-switcher').styles(
+        display: .flex,
+        alignItems: .center,
+        gap: .all(AppSpacing.s4),
+        fontFamily: AppFonts.mono,
+        fontSize: 12.px,
+      ),
+      css('.lang-option').styles(
+        padding: .symmetric(horizontal: AppSpacing.s4, vertical: AppSpacing.s4),
+        color: AppColors.inkMuted,
+      ),
+      css('a.lang-option:hover').styles(color: AppColors.ink),
+      css('.lang-option.current').styles(color: AppColors.amber),
+      css('.lang-sep').styles(color: AppColors.inkMuted),
       css('.theme-switcher').styles(
         display: .flex,
         padding: .only(left: AppSpacing.s8),

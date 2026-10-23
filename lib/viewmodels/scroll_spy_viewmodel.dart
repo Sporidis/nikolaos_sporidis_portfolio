@@ -22,11 +22,10 @@ class ScrollSpyViewModel {
     // the one being read. Walking the whole list and keeping the last match
     // is what makes `candidate` end up as the lowest (most recently passed)
     // section — i.e. the one actually in view.
-    for (final item in navItems) {
-      if (item.key == 'hire-me') continue;
-      final el = web.document.getElementById(item.key);
+    for (final id in navSectionIds) {
+      final el = web.document.getElementById(id);
       if (el == null) continue;
-      if (el.getBoundingClientRect().top <= _navOffset) candidate = item.key;
+      if (el.getBoundingClientRect().top <= _navOffset) candidate = id;
     }
     if (candidate != null && candidate != activeId) {
       activeId = candidate;

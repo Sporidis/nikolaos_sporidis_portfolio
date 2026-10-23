@@ -1,10 +1,10 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
-import 'package:nikolaos_sporidis_portfolio/models/demo_content.dart';
 
 class DemoModal extends StatelessComponent {
   final VoidCallback onClose;
@@ -12,6 +12,7 @@ class DemoModal extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     return div(classes: 'demo-overlay', [
       div(
         classes: 'demo-backdrop',
@@ -21,27 +22,25 @@ class DemoModal extends StatelessComponent {
       div(classes: 'demo-box', [
         div(classes: 'demo-header', [
           div(classes: 'demo-header-text', [
-            p(classes: 'demo-eyebrow', [.text('live demo · freshcart')]),
-            h3([.text('Two phones, one list.')]),
+            p(classes: 'demo-eyebrow', [.text(s.demoEyebrow)]),
+            h3([.text(s.demoHeading)]),
             p(classes: 'demo-description', [
-              .text(
-                'Two FreshCart clients side by side, joined to the same list. Adding or ticking on one shows up on the other — the demo drops into these two frames.',
-              ),
+              .text(s.demoDescription),
             ]),
           ]),
           button(
             events: events(onClick: onClose),
             classes: 'demo-close',
-            attributes: {'aria-label': 'Close demo'},
+            attributes: {'aria-label': s.demoClose},
             [.text('✕')],
           ),
         ]),
         div(classes: 'demo-sync', [
           span(classes: 'demo-sync-dot', []),
-          .text('both devices up to date'),
+          .text(s.demoSynced),
         ]),
         div(classes: 'demo-phones', [
-          for (var phone in demoPhones)
+          for (var phone in s.demoPhones)
             div(classes: 'demo-phone', [
               div(classes: 'demo-phone-header', [
                 span(classes: 'demo-phone-avatar', styles: Styles(raw: {'background-color': phone.color}), [
@@ -68,7 +67,17 @@ class DemoModal extends StatelessComponent {
                     ]),
                   ]),
                   div(classes: 'demo-phone-content', [
-                    p(classes: 'demo-phone-slot', [.text(phone.slot)]),
+                    // Slot for a Flutter view: web/demo/freshcart_demo.js adds its
+                    // own host element inside it. Must stay empty on the Jaspr side.
+                    // The locale is passed on as `initialData.locale`.
+                    div(
+                      classes: 'demo-phone-flutter',
+                      attributes: {
+                        'data-freshcart-phone': phone.persona,
+                        'data-freshcart-locale': s.locale.code,
+                      },
+                      [],
+                    ),
                   ]),
                   div(classes: 'demo-phone-home-row', [
                     span(classes: 'demo-phone-home-bar', []),
@@ -78,13 +87,13 @@ class DemoModal extends StatelessComponent {
             ]),
         ]),
         div(classes: 'demo-notes', [
-          for (var note in demoNotes)
+          for (var note in s.demoNotes)
             div(classes: 'demo-note', [
               p(classes: 'demo-note-title', [.text(note.title)]),
               p(classes: 'demo-note-body', [.text(note.body)]),
             ]),
         ]),
-        p(classes: 'demo-footnote', [.text('demo content to be wired in · esc to close')]),
+        p(classes: 'demo-footnote', [.text(s.demoFootnote)]),
       ]),
     ]);
   }
@@ -176,7 +185,7 @@ class DemoModal extends StatelessComponent {
         display: .grid,
         gridTemplate: GridTemplate(
           columns: GridTracks([
-            GridTrack.repeat(.autoFit, [GridTrack(.minmax(TrackSize(262.px), .fr(1)))]),
+            GridTrack.repeat(.autoFit, [GridTrack(.minmax(TrackSize(300.px), .fr(1)))]),
           ]),
         ),
         gap: .all(AppSpacing.s20),
@@ -209,7 +218,11 @@ class DemoModal extends StatelessComponent {
         border: .all(color: AppColors.hairlineStrong, width: 1.px),
         radius: .all(Radius.circular(AppRadii.device)),
         raw: {
-          'max-width': '268px',
+          // Screen is 300–360px wide (+ 9px bezel + 1px border per side). Within
+          // that range it shrinks so the whole 9 / 19.5 phone fits the viewport
+          // height (minus the overlay's 32px padding top and bottom and the
+          // 20px of bezel). Layout size, never a transform: Flutter just resizes.
+          'max-width': 'clamp(320px, calc((100dvh - 84px) * 9 / 19.5 + 20px), 380px)',
           'margin': '0 auto',
           'background': 'linear-gradient(160deg, ${AppColors.surfaceRaised.value} 0%, #101019 45%, #1A1A26 100%)',
           'box-shadow': '0 28px 70px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(0,0,0,0.6)',
@@ -290,16 +303,18 @@ class DemoModal extends StatelessComponent {
           backgroundColor: AppColors.amber,
         ),
         css('.demo-phone-content').styles(
-          display: .flex,
-          padding: .all(AppSpacing.s16),
-          radius: .all(Radius.circular(AppRadii.card)),
-          alignItems: .end,
-          raw: {
-            'flex': '1',
-            'margin': '6px 10px 0',
-            'background-color': '#101019',
-            'background-image': AppEffects.stripes,
-          },
+          position: .relative(),
+          raw: {'flex': '1', 'min-height': '0'},
+        ),
+        // Slot that sizes the Flutter host the mount script puts inside it
+        // (embed-plan.md contract): explicit size, a positioning context,
+        // overflow hidden, never transformed, no inherited text-align.
+        css('.demo-phone-flutter').styles(
+          position: .relative(),
+          width: 100.percent,
+          height: 100.percent,
+          overflow: .hidden,
+          textAlign: .left,
         ),
         css('.demo-phone-home-row').styles(
           display: .flex,
@@ -313,12 +328,6 @@ class DemoModal extends StatelessComponent {
           raw: {'background': 'rgba(242,240,235,0.25)'},
         ),
       ]),
-      css('.demo-phone-slot').styles(
-        color: AppColors.inkFaint,
-        fontFamily: AppFonts.mono,
-        fontSize: AppType.micro,
-        raw: {'line-height': '1.6', 'margin': '0'},
-      ),
       css('.demo-notes').styles(
         display: .grid,
         padding: .only(top: AppSpacing.s20),

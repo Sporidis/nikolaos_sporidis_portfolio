@@ -1,10 +1,10 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_effects.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
-import 'package:nikolaos_sporidis_portfolio/models/experience_entry.dart';
 
 class ExperienceSection extends StatelessComponent {
   final String id;
@@ -12,18 +12,19 @@ class ExperienceSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     return section(
       id: id,
       attributes: {'data-reveal': ''},
       classes: 'experience-section',
       [
-        p(classes: 'eyebrow', [.text('Experience')]),
+        p(classes: 'eyebrow', [.text(s.experienceEyebrow)]),
 
-        h2([.text('Where I\'ve shipped.')]),
+        h2([.text(s.experienceHeading)]),
         div(classes: 'timeline', [
           div(classes: 'timeline-rail', []),
 
-          for (var entry in experienceTimeline)
+          for (var entry in s.experienceTimeline)
             div(classes: 'timeline-entry${entry.active ? ' timeline-entry-active' : ''}', [
               span(classes: 'timeline-dot', []),
 
@@ -41,12 +42,12 @@ class ExperienceSection extends StatelessComponent {
                 div(classes: 'timeline-notes', [
                   if (entry.impact != null)
                     div(classes: 'timeline-note', [
-                      p(classes: 'timeline-note-label', [.text('Impact')]),
+                      p(classes: 'timeline-note-label', [.text(s.experienceImpact)]),
                       p(classes: 'timeline-note-value', [.text(entry.impact!)]),
                     ]),
                   if (entry.learned != null)
                     div(classes: 'timeline-note', [
-                      p(classes: 'timeline-note-label', [.text('Learned')]),
+                      p(classes: 'timeline-note-label', [.text(s.experienceLearned)]),
                       p(classes: 'timeline-note-value', [.text(entry.learned!)]),
                     ]),
                 ]),
@@ -77,8 +78,7 @@ class ExperienceSection extends StatelessComponent {
       position: .absolute(left: 7.px, top: 6.px, bottom: 6.px),
       width: 1.px,
       raw: {
-        'background':
-            'linear-gradient(180deg, ${AppColors.amberBorderGradient.value}, ${AppColors.hairlineMid.value})',
+        'background': 'linear-gradient(180deg, ${AppColors.amberBorderGradient.value}, ${AppColors.hairlineMid.value})',
       },
     ),
 

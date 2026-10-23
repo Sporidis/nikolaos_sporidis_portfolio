@@ -1,7 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/theme.dart';
-import 'package:nikolaos_sporidis_portfolio/models/skill.dart';
 
 class SkillsSection extends StatelessComponent {
   final String id;
@@ -10,17 +10,18 @@ class SkillsSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     return section(
       id: id,
       attributes: {'data-reveal': ''},
       classes: 'skills-section',
       [
-        p(classes: 'eyebrow', [.text('Skills')]),
+        p(classes: 'eyebrow', [.text(s.skillsEyebrow)]),
 
-        h2([.text('The toolbox.')]),
+        h2([.text(s.skillsHeading)]),
 
         div(classes: 'skills-list', [
-          for (var (i, skill) in mySkills.indexed)
+          for (var (i, skill) in s.skills.indexed)
             div(classes: 'skill-item', [
               p(classes: 'skill-index', [.text((i + 1).toString().padLeft(2, '0'))]),
               h3([.text(skill.name)]),

@@ -1,10 +1,10 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import 'package:nikolaos_sporidis_portfolio/l10n/app_strings.dart';
 import 'package:nikolaos_sporidis_portfolio/components/portrait_card.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_colors.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_fonts.dart';
 import 'package:nikolaos_sporidis_portfolio/constants/theme/app_spacing.dart';
-import 'package:nikolaos_sporidis_portfolio/models/about_block.dart';
 
 class AboutSection extends StatelessComponent {
   final String id;
@@ -12,31 +12,24 @@ class AboutSection extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
+    final s = Strings.of(context);
     return section(
       id: id,
       attributes: {'data-reveal': ''},
       classes: 'about-section',
       [
-        p(classes: 'eyebrow', [.text('About')]),
+        p(classes: 'eyebrow', [.text(s.aboutEyebrow)]),
 
         div(classes: 'about-grid', [
           PortraitCard(),
 
           div(classes: 'about-content', [
-            h2([.text('Junior developer, not a junior thinker.')]),
-            p([
-              .text(
-                'I finished my Software Engineering degree this year and spent most of it deep in Flutter — rebuilding layouts until the state model was clean, and learning that the hard part of mobile is rarely the UI code. During my internship I shipped a production Flutter app used by real field staff.',
-              ),
-            ]),
-            p([
-              .text(
-                "Now I'm looking for a team where I can keep learning from senior engineers and own features end to end — Flutter front end, Dart or Serverpod behind it.",
-              ),
-            ]),
+            h2([.text(s.aboutHeading)]),
+            p([.text(s.aboutParagraph1)]),
+            p([.text(s.aboutParagraph2)]),
 
             div(classes: 'about-facts', [
-              for (var block in aboutSectionContentList)
+              for (var block in s.aboutFacts)
                 div(classes: 'about-fact', [
                   p(classes: 'about-fact-label', [.text(block.title)]),
                   p(classes: 'about-fact-value', [.text(block.content)]),
