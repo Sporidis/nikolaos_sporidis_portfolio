@@ -32,3 +32,7 @@ migrate_working_dir/
 # Local planning docs and Claude Code project config — not shipped with the site.
 /docs/
 .claude/
+
+# FreshCart web build, copied in before deploy (see README). Only the mount
+# script next to it is source.
+/web/demo/freshcart/
