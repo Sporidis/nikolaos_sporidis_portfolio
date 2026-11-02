@@ -1,0 +1,60 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Deploys queue up instead of cancelling each other: a deploy cut off halfway
+# is worse than one that finishes a minute late.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  # The FreshCart release whose web demo the site embeds
+  # (github.com/Sporidis/freshcart/releases). Bump it to update the demo.
+  FRESHCART_DEMO_VERSION: v1.0.4
+  CLOUDFLARE_PROJECT: nikolaos-sporidis-portfolio
+
+jobs:
+  deploy:
+    name: Build & deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: '3.13.4'
+      - run: dart pub get
+
+      # web/demo/freshcart/ is gitignored: it comes from a FreshCart release.
+      # While that repo is private, GH_TOKEN needs read access to it.
+      - name: Fetch FreshCart demo
+        env:
+          GH_TOKEN: ${{ secrets.FRESHCART_RELEASES_TOKEN }}
+        run: |
+          gh release download "$FRESHCART_DEMO_VERSION" -R Sporidis/freshcart \
+            -p freshcart-demo-web.zip -D "$RUNNER_TEMP"
+          mkdir -p web/demo/freshcart
+          unzip -q "$RUNNER_TEMP/freshcart-demo-web.zip" -d web/demo/freshcart
+
+      - name: Activate Jaspr CLI
+        run: dart pub global activate jaspr_cli 0.23.4
+      - name: Build site
+        run: dart pub global run jaspr_cli:jaspr build
+
+      # Both language pages and the demo must be in the output. A missing one
+      # would otherwise only show up as a 404 on the live site.
+      - name: Check build output
+        run: |
+          for f in index.html nl/index.html demo/freshcart_demo.js demo/freshcart/main.dart.js; do
+            test -f "build/jaspr/$f" || { echo "::error::build/jaspr/$f is missing"; exit 1; }
+          done
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy build/jaspr --project-name=${{ env.CLOUDFLARE_PROJECT }} --branch=main
