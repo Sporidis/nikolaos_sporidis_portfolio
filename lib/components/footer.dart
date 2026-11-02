@@ -22,11 +22,11 @@ class Footer extends StatelessComponent {
           p(classes: 'footer-lede', [
             .text(s.footerLede),
           ]),
-          a(href: 'mailto:nikolaos.sporidis@example.com', classes: 'footer-cta', [.text('hello@nikolaos.dev')]),
+          a(href: 'mailto:nikosp.prive@gmail.com', classes: 'footer-cta', [.text('nikosp.prive@gmail.com')]),
           div(classes: 'footer-links', [
             a(href: 'https://github.com/sporidis', target: .blank, [.text('GitHub')]),
             a(href: 'https://www.linkedin.com/in/nikoloas-sporidis-870447252', target: .blank, [.text('LinkedIn')]),
-            a(href: 'https://nikolaos.dev/cv.pdf', target: .blank, [.text(s.footerCv)]),
+            a(href: '/Nikolaos-Sporidis-CV.pdf', target: .blank, [.text(s.footerCv)]),
           ]),
         ]),
         p(classes: 'footer-fineprint', [.text(s.footerFineprint)]),
