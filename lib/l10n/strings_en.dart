@@ -205,7 +205,7 @@ class EnStrings extends AppStrings {
     DemoNote(
       title: 'the tricky bit',
       body:
-          'In the shipped app, two people ticking the same item a second apart is resolved last-write-wins per field, so the list never flickers back.',
+          'In the real app, two people ticking the same item a second apart is resolved last-write-wins per field, so the list never flickers back.',
     ),
   ];
 }

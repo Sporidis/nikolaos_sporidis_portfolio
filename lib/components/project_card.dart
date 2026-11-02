@@ -162,7 +162,7 @@ class ProjectCardState extends State<ProjectCard> {
               ],
             ),
             div(classes: 'project-desc-btns', [
-              a(href: 'https://github.com/Sporidis/FreshCartV2', target: .blank, classes: 'project-desc-btn-source', [
+              a(href: 'https://github.com/Sporidis/freshcart', target: .blank, classes: 'project-desc-btn-source', [
                 .text(s.projectSource),
               ]),
               button(
