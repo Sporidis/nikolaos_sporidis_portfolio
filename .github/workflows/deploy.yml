@@ -14,7 +14,7 @@ concurrency:
 env:
   # The FreshCart release whose web demo the site embeds
   # (github.com/Sporidis/freshcart/releases). Bump it to update the demo.
-  FRESHCART_DEMO_VERSION: v1.0.4
+  FRESHCART_DEMO_VERSION: v1.0.5
   CLOUDFLARE_PROJECT: nikolaos-sporidis-portfolio
 
 jobs:
