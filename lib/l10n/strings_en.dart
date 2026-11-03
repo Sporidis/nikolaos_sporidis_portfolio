@@ -125,7 +125,7 @@ class EnStrings extends AppStrings {
       'A shopping list two or more phones can hold at once: join a list with a code, and every add, tick and edit lands on the other phones in real time. Flutter on each phone, a Serverpod backend over Postgres as the one source of truth, with streaming updates instead of pull-to-refresh. It keeps working without signal: lists are cached on the phone, and changes queue up locally and sync when the connection is back. The hard part was conflicts: two people editing the same item at once, or a change that waited offline while someone else edited the item.';
   @override
   String get projectWhy =>
-      'why I built it → my household kept shopping from two out-of-date lists, and I wanted to learn real-time state across devices on a problem I actually had.';
+      "why I built it → I wanted one shared list for my family: whoever notices we're out of something adds it right away, and whoever goes shopping sees what's needed. And I wanted a real project of my own to keep building on and learn from.";
   @override
   String get projectSource => 'Source ↗';
   @override

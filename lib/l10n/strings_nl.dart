@@ -125,7 +125,7 @@ class NlStrings extends AppStrings {
       'Een boodschappenlijst die twee of meer gsm’s tegelijk kunnen gebruiken: sluit je aan bij een lijst met een code, en elke toevoeging, elk vinkje en elke wijziging verschijnt in realtime op de andere gsm’s. Flutter op elke gsm, een Serverpod-backend op Postgres als enige bron van waarheid, met streaming updates in plaats van pull-to-refresh. Ook zonder bereik blijft het werken: lijsten staan in de cache op de gsm, en wijzigingen wachten lokaal in een wachtrij tot de verbinding terug is. Het moeilijkste waren conflicten: twee mensen die tegelijk hetzelfde item aanpassen, of een wijziging die offline wachtte terwijl iemand anders het item aanpaste.';
   @override
   String get projectWhy =>
-      'waarom ik het bouwde → bij ons thuis werd er gewinkeld met twee verouderde lijstjes, en ik wilde realtime state over meerdere toestellen leren aan de hand van een probleem dat ik echt had.';
+      'waarom ik het bouwde → ik wilde één gedeelde lijst voor ons gezin: wie merkt dat iets op is, zet het er meteen op, en wie gaat winkelen ziet wat er nodig is. En ik wilde een echt eigen project om op verder te bouwen en uit te leren.';
   @override
   String get projectSource => 'Broncode ↗';
   @override
