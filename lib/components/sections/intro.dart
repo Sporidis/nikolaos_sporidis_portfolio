@@ -30,8 +30,9 @@ class IntroSection extends StatelessComponent {
         ]),
 
         div(classes: 'intro-buttons', [
-          a(classes: 'button-primary', href: '#', [.text(s.introCtaProjects)]),
-          a(classes: 'button-secondary', href: '#', [.text(s.introCtaContact)]),
+          // Section ids from pages/portfolio.dart; #hire-me is the contact footer.
+          a(classes: 'button-primary', href: '#projects', [.text(s.introCtaProjects)]),
+          a(classes: 'button-secondary', href: '#hire-me', [.text(s.introCtaContact)]),
         ]),
       ]),
 
