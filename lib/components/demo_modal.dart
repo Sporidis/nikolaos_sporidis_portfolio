@@ -39,6 +39,30 @@ class DemoModal extends StatelessComponent {
           span(classes: 'demo-sync-dot', []),
           .text(s.demoSynced),
         ]),
+        // Small screens get a recording instead of the live phones; the mount
+        // script doesn't start Flutter there. Lazy, so wide screens (where
+        // this is display: none) never download it.
+        div(classes: 'demo-mobile', [
+          Component.element(
+            tag: 'picture',
+            children: [
+              // A GIF can't be paused, so reduced motion gets a still.
+              source(
+                attributes: {
+                  'media': '(prefers-reduced-motion: reduce)',
+                  'srcset': '/images/freshcart-list-still.png',
+                },
+              ),
+              img(
+                src: '/images/freshcart-sync.gif',
+                classes: 'demo-mobile-media',
+                alt: s.demoMobileAlt,
+                attributes: {'loading': 'lazy'},
+              ),
+            ],
+          ),
+          p(classes: 'demo-mobile-caption', [.text(s.demoMobileCaption)]),
+        ]),
         div(classes: 'demo-phones', [
           for (var phone in s.demoPhones)
             div(classes: 'demo-phone', [
@@ -367,6 +391,30 @@ class DemoModal extends StatelessComponent {
         fontSize: AppType.micro,
         raw: {'margin': '${AppSpacing.s20.value} 0 0 0'},
       ),
+      css('.demo-mobile').styles(display: .none),
+      css('.demo-mobile-media').styles(
+        display: .block,
+        width: 100.percent,
+        radius: .all(Radius.circular(AppRadii.screen)),
+        raw: {'height': 'auto', 'max-height': '70dvh', 'object-fit': 'contain'},
+      ),
+      css('.demo-mobile-caption').styles(
+        color: AppColors.inkMuted,
+        fontFamily: AppFonts.mono,
+        fontSize: AppType.label,
+        raw: {'line-height': '1.5', 'margin': '${AppSpacing.s12.value} 0 0 0'},
+      ),
+    ]),
+    // Keep 720px in step with SMALL_SCREEN in web/demo/freshcart_demo.js. Nested
+    // under `.demo-box` to match the base rules' specificity (see nav.dart).
+    css.media(MediaQuery.screen(maxWidth: 720.px), [
+      css('.demo-box', [
+        // One rule each: nesting only prefixes the first part of a selector list.
+        css('.demo-sync').styles(display: .none),
+        css('.demo-phones').styles(display: .none),
+        css('.demo-footnote').styles(display: .none),
+        css('.demo-mobile').styles(display: .block, raw: {'margin-top': AppSpacing.s24.value}),
+      ]),
     ]),
   ];
 }

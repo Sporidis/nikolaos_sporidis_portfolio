@@ -187,6 +187,11 @@ class NlStrings extends AppStrings {
   @override
   String get demoFootnote => 'draait volledig in je browser · esc om te sluiten';
   @override
+  String get demoMobileCaption => 'Een opname van de echte app. Open deze pagina op een computer om beide gsm’s zelf te proberen.';
+  @override
+  String get demoMobileAlt =>
+      'Twee FreshCart-gsm’s op dezelfde lijst: wat je op de ene toevoegt of afvinkt, verschijnt meteen op de andere.';
+  @override
   String get demoPhoneOwnerA => 'Gsm van Nikolaos';
   @override
   String get demoPhoneOwnerB => 'Gsm van huisgenoot';

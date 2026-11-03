@@ -187,6 +187,11 @@ class EnStrings extends AppStrings {
   @override
   String get demoFootnote => 'runs entirely in your browser · esc to close';
   @override
+  String get demoMobileCaption => 'A recording of the real app. Open this page on a computer to try both phones yourself.';
+  @override
+  String get demoMobileAlt =>
+      'Two FreshCart phones on the same list: items added or ticked off on one phone show up on the other straight away.';
+  @override
   String get demoPhoneOwnerA => "Nikolaos' phone";
   @override
   String get demoPhoneOwnerB => "Flatmate's phone";

@@ -8,7 +8,10 @@
 // Contract with FreshCart: docs/freshcart-demo/embed-plan.md, reference host
 // page: FreshCart's freshcart_flutter/tool/demo/demo.html.
 (() => {
-  const BASE = '/demo/freshcart/';
+  const BASE = "/demo/freshcart/";
+  // Below this the modal shows a recording instead of the phones, so Flutter
+  // (several MB) isn't wanted. Keep in step with the media query in DemoModal.
+  const SMALL_SCREEN = matchMedia("(max-width: 720px)");
 
   /** @type {Map<Element, number>} host element -> Flutter view id */
   const mounted = new Map();
@@ -27,7 +30,10 @@
             // canvasKitBaseUrl self-hosts CanvasKit (default: Google's CDN). It
             // must be absolute: the loader's local fallback, "canvaskit", is
             // resolved against the page, not entrypointBaseUrl.
-            config: { entrypointBaseUrl: BASE, canvasKitBaseUrl: `${BASE}canvaskit/` },
+            config: {
+              entrypointBaseUrl: BASE,
+              canvasKitBaseUrl: `${BASE}canvaskit/`,
+            },
             onEntrypointLoaded: async (engineInitializer) => {
               try {
                 const engine = await engineInitializer.initializeEngine({
@@ -43,10 +49,11 @@
         },
       };
 
-      const script = document.createElement('script');
+      const script = document.createElement("script");
       script.src = `${BASE}flutter_bootstrap.js`;
       script.async = true;
-      script.onerror = () => reject(new Error(`FreshCart demo: failed to load ${script.src}`));
+      script.onerror = () =>
+        reject(new Error(`FreshCart demo: failed to load ${script.src}`));
       document.head.appendChild(script);
     });
     // Let a later open retry if loading failed (e.g. offline).
@@ -62,15 +69,33 @@
   // but it leaves nodes it didn't create alone. Styles are the host contract:
   // explicit size, positioning context, overflow hidden, no inherited text-align.
   function createHost(slot) {
-    const host = document.createElement('div');
-    host.style.cssText = 'position:relative;width:100%;height:100%;overflow:hidden;text-align:left';
+    const host = document.createElement("div");
+    host.style.cssText =
+      "position:relative;width:100%;height:100%;overflow:hidden;text-align:left";
     slot.appendChild(host);
     return host;
   }
 
   async function syncViews() {
-    const hosts = [...document.querySelectorAll('[data-freshcart-phone]')];
+    const hosts = [...document.querySelectorAll("[data-freshcart-phone]")];
     if (!hosts.length && !mounted.size) return;
+
+    // Small screen: the modal shows a recording, so never start Flutter for
+    // it. Phones still running from before a resize are hidden now, so remove
+    // them; widening the window again adds fresh ones.
+    if (SMALL_SCREEN.matches) {
+      if (mounted.size) {
+        const app = await appPromise; // set: views only exist once it resolved
+        for (const [el, viewId] of mounted) {
+          app.removeView(viewId);
+          // removeView leaves our host div behind. A new host added next to it
+          // on widening would be pushed out of sight, so empty the slot.
+          el.replaceChildren();
+        }
+        mounted.clear();
+      }
+      return;
+    }
 
     const app = await startFlutter();
 
@@ -86,7 +111,10 @@
         hostElement: createHost(el),
         // locale: 'en' | 'nl', the language of the portfolio page. FreshCart
         // falls back to English when it's missing (older host pages).
-        initialData: { persona: el.dataset.freshcartPhone, locale: el.dataset.freshcartLocale },
+        initialData: {
+          persona: el.dataset.freshcartPhone,
+          locale: el.dataset.freshcartLocale,
+        },
       });
       mounted.set(el, viewId);
     }
@@ -98,6 +126,10 @@
     queue = queue.then(syncViews).catch((e) => console.error(e));
   }
 
-  new MutationObserver(scheduleSync).observe(document.body, { childList: true, subtree: true });
+  new MutationObserver(scheduleSync).observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+  SMALL_SCREEN.addEventListener("change", scheduleSync);
   scheduleSync();
 })();

@@ -113,6 +113,8 @@ abstract class AppStrings {
   String get demoClose;
   String get demoSynced;
   String get demoFootnote;
+  String get demoMobileCaption;
+  String get demoMobileAlt;
   String get demoPhoneOwnerA;
   String get demoPhoneOwnerB;
   List<DemoNote> get demoNotes;
