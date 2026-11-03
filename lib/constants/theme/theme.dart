@@ -41,7 +41,6 @@ List<StyleRule> get styles => [
       '--accent': '#F5A623',
       '--accent-lift': '#FFC163',
       '--accent-rgb': '245,166,35',
-      'transition': '--accent .3s ease, --accent-lift .3s ease',
     },
   ),
 
@@ -67,6 +66,8 @@ List<StyleRule> get styles => [
       'overflow-x': 'hidden',
       '-webkit-font-smoothing': 'antialiased',
       'text-rendering': 'optimizeLegibility',
+      // NavAccentViewModel sets the accent on <body>, so it fades here.
+      'transition': '--accent .3s ease, --accent-lift .3s ease',
     },
   ),
 

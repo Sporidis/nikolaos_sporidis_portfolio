@@ -17,10 +17,13 @@ class NavAccentViewModel {
   void applyTheme(String key) {
     final t = themes[key]!;
 
-    final root = web.document.documentElement as web.HTMLElement?;
-    root?.style.setProperty('--accent', t.accent);
-    root?.style.setProperty('--accent-lift', t.lift);
-    root?.style.setProperty('--accent-rgb', t.rgb);
+    // On <body>, not <html>: Jaspr owns <html>'s attributes (Document.html in
+    // app.dart) and removes ones it didn't set whenever the route rebuilds,
+    // which a #section nav click does.
+    final body = web.document.body;
+    body?.style.setProperty('--accent', t.accent);
+    body?.style.setProperty('--accent-lift', t.lift);
+    body?.style.setProperty('--accent-rgb', t.rgb);
 
     try {
       web.window.localStorage.setItem('portfolio-accent', key);
