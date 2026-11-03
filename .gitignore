@@ -36,3 +36,6 @@ migrate_working_dir/
 # FreshCart web build, copied in before deploy (see README). Only the mount
 # script next to it is source.
 /web/demo/freshcart/
+
+# Local tool for re-recording the demo GIF (tool/record_demo/README.md).
+/tool/record_demo/
