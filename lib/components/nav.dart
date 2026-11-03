@@ -257,6 +257,9 @@ class NavBarState extends State<NavBar> {
             [],
           ),
           for (final item in sectionItems) _navLink(item),
+          // Mobile only: the bar has no room for the switcher, so it moves
+          // into the menu. CSS shows one of the two copies, never both.
+          div(classes: 'navbar-menu-lang', [_languageSwitcher(s)]),
         ]),
         _languageSwitcher(s),
         _themeSwitcher(s),
@@ -361,6 +364,7 @@ class NavBarState extends State<NavBar> {
       css('a.lang-option:hover').styles(color: AppColors.ink),
       css('.lang-option.current').styles(color: AppColors.amber),
       css('.lang-sep').styles(color: AppColors.inkMuted),
+      css('.navbar-menu-lang').styles(display: .none),
       css('.theme-switcher').styles(
         display: .flex,
         padding: .only(left: AppSpacing.s8),
@@ -435,7 +439,7 @@ class NavBarState extends State<NavBar> {
           fontSize: AppType.chip,
           fontWeight: FontWeight.w500,
           backgroundColor: AppColors.amber,
-          raw: {'transition': 'box-shadow .25s ease'},
+          raw: {'transition': 'box-shadow .25s ease', 'white-space': 'nowrap'},
         ),
         css('&:hover').styles(
           shadow: BoxShadow(
@@ -515,6 +519,30 @@ class NavBarState extends State<NavBar> {
           ),
         ]),
         css('.navbar-indicator').styles(display: .none), // sliding underline doesn't apply to a stacked menu
+        // EN · NL lives in the menu here (see build), so the bar's copy goes,
+        // and with it the divider that separated it from the colour dot.
+        css('.navbar-right > .lang-switcher').styles(display: .none),
+        css('.theme-switcher').styles(
+          padding: .zero,
+          margin: .zero,
+          raw: {'border-left': 'none'},
+        ),
+        css('.navbar-menu-lang', [
+          css('&').styles(
+            display: .block,
+            width: 100.percent,
+            padding: .only(top: AppSpacing.s8),
+            border: .only(
+              top: BorderSide.solid(color: AppColors.hairline, width: 1.px),
+            ),
+          ),
+          // `.navbar-links a` above would make these look like section links.
+          css('a.lang-option').styles(
+            padding: .symmetric(horizontal: AppSpacing.s4, vertical: AppSpacing.s4),
+            color: AppColors.inkMuted,
+          ),
+          css('a.lang-option:hover').styles(color: AppColors.ink),
+        ]),
       ]),
     ]),
   ];
