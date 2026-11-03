@@ -119,10 +119,10 @@ class EnStrings extends AppStrings {
   @override
   String get projectFeatured => 'featured';
   @override
-  String get projectMeta => 'shared shopping cart · Flutter + Serverpod';
+  String get projectMeta => 'shared shopping list · Flutter + Serverpod';
   @override
   String get projectBody =>
-      'A shopping list two or more phones can hold at once: join a cart with a code, and every add, tick and edit lands on the other devices in real time. Flutter on each client, a Serverpod backend over Postgres keeping one source of truth, with streaming updates instead of pull-to-refresh. The hard part was conflict handling — what happens when two people tick the same item a second apart.';
+      'A shopping list two or more phones can hold at once: join a list with a code, and every add, tick and edit lands on the other phones in real time. Flutter on each phone, a Serverpod backend over Postgres as the one source of truth, with streaming updates instead of pull-to-refresh. It keeps working without signal: lists are cached on the phone, and changes queue up locally and sync when the connection is back. The hard part was conflicts: two people editing the same item at once, or a change that waited offline while someone else edited the item.';
   @override
   String get projectWhy =>
       'why I built it → my household kept shopping from two out-of-date lists, and I wanted to learn real-time state across devices on a problem I actually had.';
@@ -139,6 +139,7 @@ class EnStrings extends AppStrings {
     'Riverpod',
     'Realtime streams',
     'Multi-device sync',
+    'Offline sync',
   ];
 
   // ---------------------------------------------------------------- skills
@@ -155,7 +156,7 @@ class EnStrings extends AppStrings {
     ),
     Skill(
       name: 'Tooling',
-      tags: ['Git', 'Github Actions', 'Figma', 'VS Code', 'Android Studio', 'Jaspr', 'CI/CD', 'Docker'],
+      tags: ['Git', 'GitHub Actions', 'Figma', 'VS Code', 'Android Studio', 'Claude Code', 'Jaspr', 'CI/CD', 'Docker'],
     ),
   ];
 
@@ -198,19 +199,19 @@ class EnStrings extends AppStrings {
   @override
   List<DemoNote> get demoNotes => const [
     DemoNote(
-      title: 'what is real',
+      title: 'real in this demo',
       body:
           'The actual FreshCart Flutter app, compiled to the web: its UI, Riverpod state, domain logic and the join-code flow. Both phones run from one Flutter engine.',
     ),
     DemoNote(
-      title: 'what is simulated',
+      title: 'simulated in this demo',
       body:
-          'Serverpod, sign-in, push and offline sync. An in-memory backend in your browser stands in for them, so nothing you type leaves this page.',
+          'Only the backend. The installed app has a real Serverpod server, with sign-in, push and offline sync. Here an in-memory backend in your browser stands in for it, so nothing you type leaves this page.',
     ),
     DemoNote(
       title: 'the tricky bit',
       body:
-          'In the real app, two people ticking the same item a second apart is resolved last-write-wins per field, so the list never flickers back.',
+          'In the installed app, every save carries the version it was based on. If someone else changed the item first, the server rejects the save instead of overwriting their change, and the app rolls back and reads it again. Changes made offline go through the same check when they sync, and the app says how many were turned down.',
     ),
   ];
 }

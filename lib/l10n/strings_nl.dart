@@ -122,7 +122,7 @@ class NlStrings extends AppStrings {
   String get projectMeta => 'gedeelde boodschappenlijst · Flutter + Serverpod';
   @override
   String get projectBody =>
-      'Een boodschappenlijst die twee of meer gsm’s tegelijk kunnen gebruiken: sluit je aan bij een lijst met een code, en elke toevoeging, elk vinkje en elke wijziging verschijnt in realtime op de andere toestellen. Flutter op elke client, een Serverpod-backend op Postgres als enige bron van waarheid, met streaming updates in plaats van pull-to-refresh. Het moeilijkste was conflicten afhandelen — wat er gebeurt als twee mensen hetzelfde item een seconde na elkaar afvinken.';
+      'Een boodschappenlijst die twee of meer gsm’s tegelijk kunnen gebruiken: sluit je aan bij een lijst met een code, en elke toevoeging, elk vinkje en elke wijziging verschijnt in realtime op de andere gsm’s. Flutter op elke gsm, een Serverpod-backend op Postgres als enige bron van waarheid, met streaming updates in plaats van pull-to-refresh. Ook zonder bereik blijft het werken: lijsten staan in de cache op de gsm, en wijzigingen wachten lokaal in een wachtrij tot de verbinding terug is. Het moeilijkste waren conflicten: twee mensen die tegelijk hetzelfde item aanpassen, of een wijziging die offline wachtte terwijl iemand anders het item aanpaste.';
   @override
   String get projectWhy =>
       'waarom ik het bouwde → bij ons thuis werd er gewinkeld met twee verouderde lijstjes, en ik wilde realtime state over meerdere toestellen leren aan de hand van een probleem dat ik echt had.';
@@ -139,6 +139,7 @@ class NlStrings extends AppStrings {
     'Riverpod',
     'Realtime streams',
     'Multi-device sync',
+    'Offline sync',
   ];
 
   // ---------------------------------------------------------------- skills
@@ -155,7 +156,7 @@ class NlStrings extends AppStrings {
     ),
     Skill(
       name: 'Tooling',
-      tags: ['Git', 'Github Actions', 'Figma', 'VS Code', 'Android Studio', 'Jaspr', 'CI/CD', 'Docker'],
+      tags: ['Git', 'GitHub Actions', 'Figma', 'VS Code', 'Android Studio', 'Claude Code', 'Jaspr', 'CI/CD', 'Docker'],
     ),
   ];
 
@@ -198,19 +199,19 @@ class NlStrings extends AppStrings {
   @override
   List<DemoNote> get demoNotes => const [
     DemoNote(
-      title: 'wat echt is',
+      title: 'echt in deze demo',
       body:
           'De echte FreshCart Flutter-app, gecompileerd naar het web: de UI, Riverpod-state, domeinlogica en de flow met de deelcode. Beide gsm’s draaien op één Flutter-engine.',
     ),
     DemoNote(
-      title: 'wat gesimuleerd is',
+      title: 'gesimuleerd in deze demo',
       body:
-          'Serverpod, inloggen, pushmeldingen en offline sync. Een in-memory backend in je browser neemt hun plaats in, dus niets wat je typt verlaat deze pagina.',
+          'Alleen de backend. De geïnstalleerde app heeft een echte Serverpod-server, met inloggen, pushmeldingen en offline sync. Hier neemt een in-memory backend in je browser die plaats in, dus niets wat je typt verlaat deze pagina.',
     ),
     DemoNote(
       title: 'het lastige stuk',
       body:
-          'In de echte app wordt het conflict als twee mensen hetzelfde item een seconde na elkaar afvinken per veld opgelost met last-write-wins, zodat de lijst nooit terugspringt.',
+          'In de geïnstalleerde app stuurt elke opslag mee op welke versie hij gebaseerd was. Heeft iemand anders het item intussen aangepast, dan weigert de server de opslag in plaats van die wijziging te overschrijven, en de app draait terug en leest het item opnieuw. Offline wijzigingen gaan bij het synchroniseren door dezelfde controle, en de app meldt hoeveel er geweigerd zijn.',
     ),
   ];
 }
